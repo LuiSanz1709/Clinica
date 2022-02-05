@@ -47,7 +47,7 @@ public class AddUsuario extends javax.swing.JFrame {
 
         jLabel2.setText("Contraseña");
 
-        jButton1.setText("Agregar");
+        jButton1.setText("Modificar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -58,26 +58,26 @@ public class AddUsuario extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(jTextField1))))
-                .addGap(159, 159, 159))
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(163, 163, 163))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -87,7 +87,7 @@ public class AddUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -95,24 +95,7 @@ public class AddUsuario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        Usuario u=new Usuario();
-        u.setUsuario(jTextField1.getText(), jTextField2.getText());
-        Conexion c=new Conexion();
-        Servicios s= new Servicios();
-        try {
-            s.guardar(c.obtener(), u);
-            showMessageDialog(null, "Agregado con Exito");
-            this.setVisible(false);
-            Principal.jTable2.setModel(s.recuperarTodas(Conexion.obtener()));
-        } catch (SQLException ex) {
-            Logger.getLogger(AddUsuario.class.getName()).log(Level.SEVERE, null, ex);
-            
-            showMessageDialog(null, "Error de conexion");
-        } catch (ClassNotFoundException ex) {
-            
-            showMessageDialog(null, "Error al agregar");
-            Logger.getLogger(AddUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -9,6 +9,7 @@ import Connection.Conexion;
 import Modelos.Articulo;
 import Modelos.DetalleVenta;
 import Modelos.Usuario;
+import Servicios.RenderTabla;
 import Servicios.Servicios;
 import Ticket.Ticket;
 import java.awt.Color;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -40,6 +42,8 @@ public class Principal extends javax.swing.JFrame {
         this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
+        
+            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
         jLabel2.setText("Bienvenido: "+usu);
         titulo.setText("Ventas");
         da.addColumn("articulo");
@@ -57,6 +61,8 @@ public class Principal extends javax.swing.JFrame {
          try {
            Servicios s= new Servicios();
            Conexion c=new Conexion();
+           
+            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
             jTable2.setModel(s.recuperarTodas(c.obtener()));
                     
             } catch (SQLException ex) {
@@ -115,11 +121,17 @@ public class Principal extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        paciente = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jPasswordField1 = new javax.swing.JPasswordField();
         jPanel10 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -513,6 +525,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Palatino Linotype", 0, 10)); // NOI18N
         jLabel17.setText("IVA:");
 
+        paciente.setText("xx");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -548,7 +562,9 @@ public class Principal extends javax.swing.JFrame {
                             .addGap(332, 332, 332)
                             .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(paciente, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(178, 178, 178)
                             .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -576,7 +592,9 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel15)
                             .addComponent(jLabel17))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel16)))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(paciente))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -585,7 +603,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         jTabbedPane5.addTab("tab1", jPanel8);
@@ -603,6 +621,11 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jTable2 = new javax.swing.JTable(){
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -614,6 +637,7 @@ public class Principal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable2.setCellSelectionEnabled(true);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -621,30 +645,80 @@ public class Principal extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTable2);
 
+        jTextField1.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                jTextField1ComponentAdded(evt);
+            }
+        });
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField1FocusGained(evt);
+            }
+        });
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jLabel11.setText("Usuario:");
+
+        jLabel20.setText("Contraseña:");
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel20))
+                            .addGap(53, 53, 53)
+                            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField2)
+                                .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1))
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jButton1))
-                .addGap(107, 107, 107)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
 
         jTabbedPane5.addTab("tab2", jPanel9);
@@ -801,16 +875,43 @@ public class Principal extends javax.swing.JFrame {
         jPanel6.setBackground(new Color(240,240,240));
     }//GEN-LAST:event_jTabbedPane5MouseClicked
 
+    public void boton1MouseClicked(java.awt.event.MouseEvent evt){
+        
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        AddUsuario usu=new AddUsuario();
-        usu.setVisible(true);
-
+        //AddUsuario usu=new AddUsuario();
+        //usu.setVisible(true);
+        JButton boton1= new JButton("mod");
+         Usuario u=new Usuario();
+        u.setUsuario(jTextField2.getText(), jPasswordField1.getText());
+        Conexion c=new Conexion();
+        Servicios s= new Servicios();
+      
+        try {
+            s.guardar(c.obtener(), u);
+             showMessageDialog(null, "Agregado con Exito");
+            
+           
+            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
+            
+            jTable2.setModel(s.recuperarTodas(Conexion.obtener()));
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           jTextField2.setText(""); jPasswordField1.setText("");
+     
         //this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+       
+        
+        /*
         System.out.println("hola");
         Ticket ticket=new Ticket();
         ticket.AddCabecera("RESTAURANTE XXXX");
@@ -860,7 +961,7 @@ public class Principal extends javax.swing.JFrame {
         ticket.AddPieLinea("Gracias por su visita");
         ticket.AddPieLinea(ticket.DarEspacio());
         System.out.println();
-        ticket.ImprimirDocumento("RICOH Edf_Admin Color",true);
+        ticket.ImprimirDocumento("RICOH Edf_Admin Color",true);*/
 
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -915,10 +1016,18 @@ public class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        DefaultTableModel dtmEjemplo = new DefaultTableModel(0,
+                                                             0);
+ 
+        dventa=new JTable(dtmEjemplo){
+        public boolean isCellEditable(int rowIndex, int vColIndex) {
+            return false;
+        }}; //return false: Desabilitar ed
+        
         
         //Agregar Venta
         
-        DetalleVenta dv=new DetalleVenta();
+        //DetalleVenta dv=new DetalleVenta();
         //dv.setDetalleVenta(WIDTH, WAIT_CURSOR, ABORT, WIDTH);
        // Integer id_venta, Integer id_Articulo,double importe, Integer cantidad
         //s. art.getText();
@@ -927,14 +1036,73 @@ public class Principal extends javax.swing.JFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
+        int col= jTable2.getSelectedColumn();
         int Fila = jTable2.getSelectedRow();
-         /*
-         showMessageDialog(null,jTable2.getValueAt(Fila, 0).toString());
-         showMessageDialog(null,jTable2.getValueAt(Fila, 1).toString());
-         showMessageDialog(null,jTable2.getValueAt(Fila, 2).toString());
-         showMessageDialog(null, jTable2.getSelectedRow());
-        */
+        switch (col){
+            case 1: 
+                showMessageDialog(null,"Desea Editar? "+jTable2.getValueAt(Fila, 0).toString());
+                break;
+            case 2:
+                showMessageDialog(null,"Desea Eliminar? "+jTable2.getValueAt(Fila, 0).toString());
+                break;
+            default:
+                        
+            
+        }
+            
+         //showMessageDialog(null,jTable2.getValueAt(Fila, 0).toString());
+         //showMessageDialog(null,jTable2.getValueAt(Fila, 1).toString());
+         //showMessageDialog(null,jTable2.getValueAt(Fila, 2).toString());
+         //showMessageDialog(null, jTable2.getSelectedRow());
+        
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+      
+        
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField1ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jTextField1ComponentAdded
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jTextField1ComponentAdded
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+      
+         
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+  
+        
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+           String usu=jTextField1.getText();
+           if (usu.isEmpty()){
+        reload();
+           }else{
+              try {
+           Servicios s= new Servicios();
+           Conexion c=new Conexion();
+           
+            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
+            jTable2.setModel(s.recuperarUsu(c.obtener(),usu));   
+          
+            } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+           }
+        
+    }//GEN-LAST:event_jTextField1KeyReleased
    
            
       
@@ -1005,6 +1173,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1014,6 +1183,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1035,11 +1205,15 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane5;
     public static javax.swing.JTable jTable2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    public static javax.swing.JLabel paciente;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }
