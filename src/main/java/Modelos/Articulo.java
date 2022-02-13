@@ -62,6 +62,7 @@ public class Articulo {
    public String getDescripcion() {
       return descripcion;
    }
+
             
     
 }

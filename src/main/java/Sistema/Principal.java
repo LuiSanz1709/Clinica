@@ -9,6 +9,7 @@ import Connection.Conexion;
 import Modelos.Articulo;
 import Modelos.DetalleVenta;
 import Modelos.Usuario;
+import Modelos.Venta;
 import Servicios.RenderTabla;
 import Servicios.Servicios;
 import Ticket.Ticket;
@@ -17,6 +18,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,18 +35,22 @@ import javax.swing.table.DefaultTableModel;
 
 public class Principal extends javax.swing.JFrame {
     DefaultTableModel da=new DefaultTableModel();
-       
+    public static Usuario u=new Usuario();
+    public static Servicios s= new Servicios();
+    public static Conexion c=new Conexion();
+           
 
     /**
      * Creates new form Principal
      */
-    public Principal(String usu) {
+    public Principal(Usuario usu) {
+       
         this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
-        
-            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
-        jLabel2.setText("Bienvenido: "+usu);
+        u=usu;
+        jTable2.setDefaultRenderer(Object.class,new RenderTabla());
+        jLabel2.setText("Bienvenido: "+usu.getUsuario());
         titulo.setText("Ventas");
         da.addColumn("articulo");
         da.addColumn("precio");
@@ -59,9 +65,7 @@ public class Principal extends javax.swing.JFrame {
     
     public void reload(){
          try {
-           Servicios s= new Servicios();
-           Conexion c=new Conexion();
-           
+          
             jTable2.setDefaultRenderer(Object.class,new RenderTabla());
             jTable2.setModel(s.recuperarTodas(c.obtener()));
                     
@@ -799,8 +803,7 @@ public class Principal extends javax.swing.JFrame {
         titulo.setText("Usuarios");
           
         try {
-           Servicios s= new Servicios();
-           Conexion c=new Conexion();
+          
             jTable2.setModel(s.recuperarTodas(c.obtener()));
                     
             } catch (SQLException ex) {
@@ -885,7 +888,7 @@ public class Principal extends javax.swing.JFrame {
         JButton boton1= new JButton("mod");
          Usuario u=new Usuario();
         u.setUsuario(jTextField2.getText(), jPasswordField1.getText());
-        Conexion c=new Conexion();
+       
         Servicios s= new Servicios();
       
         try {
@@ -911,6 +914,25 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
        
         
+      //  DetalleVenta dv=new DetalleVenta();
+       // Venta v=new Venta();
+        //ArrayList<DetalleVenta> art = new ArrayList<DetalleVenta>();
+        //FOR para almacenar articulos
+        //showMessageDialog(null, dventa.getRowHeight());
+        //v.setVenta(1, 1, 100);
+        try {
+            
+             int id=s.addVenta(c.obtener());
+           
+             showMessageDialog(null, "Venta Realizada");
+            
+      
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         /*
         System.out.println("hola");
         Ticket ticket=new Ticket();
@@ -982,16 +1004,14 @@ public class Principal extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
 
-        Servicios s= new Servicios();
-        Conexion c=new Conexion();
+       
         art.getText();
 
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
-        AddArticulo a=new AddArticulo();
+            AddArticulo a=new AddArticulo();
         a.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1003,8 +1023,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         //Busca Art
-        Servicios s= new Servicios();
-        Conexion c=new Conexion();
+      
         Articulo a=new Articulo();
         try {
             a=s.getArticulo(art.getText(),c.obtener());
@@ -1089,8 +1108,6 @@ public class Principal extends javax.swing.JFrame {
         reload();
            }else{
               try {
-           Servicios s= new Servicios();
-           Conexion c=new Conexion();
            
             jTable2.setDefaultRenderer(Object.class,new RenderTabla());
             jTable2.setModel(s.recuperarUsu(c.obtener(),usu));   
@@ -1107,6 +1124,8 @@ public class Principal extends javax.swing.JFrame {
            
       
   public DefaultTableModel AddArt(Articulo a,DefaultTableModel art){
+            DetalleVenta dv= new DetalleVenta();
+            
              Object d[] = new Object[3];
              d[0]=a.getArticulo();
              d[1]=a.getPrecio();
@@ -1144,7 +1163,7 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal("Bienvenido: ").setVisible(true);
+                new Principal(u).setVisible(true);
             }
         });
     }

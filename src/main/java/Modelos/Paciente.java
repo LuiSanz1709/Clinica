@@ -45,11 +45,7 @@ public class Paciente {
    public Integer getID() {
       return id;
    }
-   
-    public String getPaciente() {
-      return nombre;
-   }
-   
+
    public String getTelefono() {
       return telefono;
    }
@@ -62,6 +58,9 @@ public class Paciente {
    public String getDireccion() {
       return direccion;
    }
+
+    public String getPaciente() {
+       return nombre; }
    
   
    

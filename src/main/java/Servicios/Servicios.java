@@ -9,10 +9,12 @@ import Modelos.Articulo;
 import Modelos.DetalleVenta;
 import Modelos.Paciente;
 import Modelos.Usuario;
+import Modelos.Venta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -25,6 +27,10 @@ public class Servicios {
     private final String tabla = "Usuario";
     JButton boton1 = new JButton("Editar");
      JButton boton2 = new JButton("Eliminar");
+     ArrayList<DetalleVenta> arts = new ArrayList<DetalleVenta>();
+     Usuario u=new Usuario();
+     Paciente p=new Paciente();
+     double total;
    //*******************************************************  LOGIN  ********************************************************************************************************************************* 
    public Usuario login(Connection conexion,String usuario)  throws SQLException{
          try{
@@ -32,9 +38,9 @@ public class Servicios {
          consulta.setString(1, usuario);
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Usuario u= new Usuario();
-             u.setUsuario(resultado.getString("usuario"),resultado.getString("password"));
+             u= new Usuario(resultado.getInt("id"),resultado.getString("usuario"),resultado.getString("password"));
             // System.out.println(u.toString());
+             System.out.println(u);
            return u;
          }
       }catch(SQLException ex){
@@ -296,12 +302,15 @@ public class Servicios {
      
    
    public Articulo getArticulo(String a,Connection conexion) throws SQLException{
+       DetalleVenta dv=new DetalleVenta();
        Articulo art= null;
        PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM Articulo WHERE ref = ?" );
        consulta.setString(1, a);
        ResultSet resultado = consulta.executeQuery();
        while(resultado.next()){
+            dv.setDetalleVentaTem(resultado.getInt("id"),resultado.getDouble("precio"),1);
             art = new Articulo(resultado.getInt("id"), resultado.getString("Articulo"), resultado.getString("ref"),resultado.getDouble("precio"),resultado.getString("descripcion"));
+            arts.add(dv);
        }
        return art;
    }
@@ -324,13 +333,60 @@ public class Servicios {
       }
    }
    
+      
+   public Integer addVenta(Connection conexion) throws SQLException{
+       int idDevuelto = 0;
+       try{
+         
+         PreparedStatement consulta;
+         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario) VALUES(?, ?); ",Statement.RETURN_GENERATED_KEYS);
+         consulta.setInt(1,p.getID());// p.getID());
+         consulta.setInt(2, u.getID());
+        
+         System.out.println(consulta.executeUpdate());
+         ResultSet result = consulta.getGeneratedKeys();  
 
+        if (result.next()) {
+         idDevuelto = result.getInt(1);
+          }
+        
+         
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+       addDetalleVenta(conexion,idDevuelto);
+       return idDevuelto;
+   }
+   
+   
+         
+        public void addDetalleVenta(Connection conexion,Integer id) throws SQLException{
+      
+       try{
+           
+           
+           for(DetalleVenta dv : arts)
+            {
+               PreparedStatement consulta;
+               consulta = conexion.prepareStatement("INSERT INTO Detalle_Venta (id_venta, id_articulo,importe,cantidad) VALUES(?,?,?,?); ");
+               consulta.setInt(1,id);// p.getID());
+               consulta.setInt(2, dv.getIdArticulo());
+               consulta.setDouble(3,dv.getImporte());
+               consulta.setInt(4,dv.getCantidad());
+               System.out.println(consulta.executeUpdate());
+            }
+           
+         
+        
+        
+         
 
-
-  
-  
-  
-  
+    
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+   }
+   
 }
 
             

@@ -174,9 +174,7 @@ public class AddPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
   public void reload(){
          try {
-           Servicios s= new Servicios();
-           Conexion c=new Conexion();
-            TPaciente.setModel(s.GetPacientes(c.obtener()));
+            TPaciente.setModel(Principal.s.GetPacientes(Principal.c.obtener()));
                     
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -193,11 +191,9 @@ public class AddPaciente extends javax.swing.JFrame {
         
         Paciente p=new Paciente();
         p.setPaciente(jTextField1.getText(), jTextField2.getText(),Integer.parseInt(jTextField3.getText()),jTextArea1.getText());
-        Conexion c=new Conexion();
-        Servicios s= new Servicios();
-       
         try {
-            s.AddPaciente( c.obtener() , p);
+            Principal.s.AddPaciente( Principal.c.obtener() , p);
+          //  Servicios.p=p;
             showMessageDialog(null, "Agregado con Exito");
             this.setVisible(false);
         } catch (SQLException ex) {
@@ -217,11 +213,10 @@ public class AddPaciente extends javax.swing.JFrame {
         reload();
            }else{
               try {
-           Servicios s= new Servicios();
-           Conexion c=new Conexion();
+          
            
             TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
-            TPaciente.setModel(s.recuperarPac(c.obtener(),pac));   
+            TPaciente.setModel(Principal.s.recuperarPac(Principal.c.obtener(),pac));   
           
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);

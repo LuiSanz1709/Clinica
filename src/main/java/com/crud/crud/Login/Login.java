@@ -192,12 +192,11 @@ public class Login extends javax.swing.JFrame {
           String pass = this.jPasswordField1.getText();
          
         try {
-            Conexion c = new Conexion();
-            Servicios s = new Servicios();
-            Usuario pass2=s.login(c.obtener(), usu);
+           
+            Usuario pass2=Sistema.Principal.s.login(Sistema.Principal.c.obtener(), usu);
            if(pass2!=null){
                if(pass.equals(pass2.getPassword())){
-                Principal pri=new Principal(pass2.getUsuario());
+                Principal pri=new Principal(pass2);
                 pri.setVisible(true);
                 this.setVisible(false);
                }

@@ -5,6 +5,7 @@ Modelos\Paciente.class
 Sistema\Principal$5.class
 Sistema\Principal$21.class
 Servicios\RenderTabla.class
+Sistema\Pago$1.class
 Ticket\OrderItem.class
 Sistema\AddArticulo$2.class
 Ticket\Ticket.class
@@ -21,6 +22,7 @@ Sistema\AddPaciente$4.class
 Sistema\AddArticulo$1.class
 Sistema\Principal$18.class
 Sistema\Principal$27.class
+Sistema\Pago.class
 Sistema\Principal$12.class
 Sistema\Principal$3.class
 Sistema\Principal$6.class

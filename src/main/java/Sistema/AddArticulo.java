@@ -148,11 +148,10 @@ public class AddArticulo extends javax.swing.JFrame {
         // TODO add your handling code here:
         Articulo a=new Articulo();
         a.setArticulo(jTextField1.getText(),(jTextField3.getText()), Double.parseDouble(jTextField2.getText()),jTextArea1.getText());
-        Conexion c=new Conexion();
-        Servicios s= new Servicios();
+        
        
         try {
-           s.addArticulo(c.obtener() , a);
+           Principal.s.addArticulo(Principal.c.obtener() , a);
             showMessageDialog(null, "Agregado con Exito");
             this.setVisible(false);
         } catch (SQLException ex) {

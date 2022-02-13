@@ -22,7 +22,7 @@ public class Usuario {
       this.Usuario = null;
       this.Password = null;
    }
-   public Usuario(Integer id, String Usuario, String Password) {
+   public  Usuario(Integer id, String Usuario, String Password) {
       this.id = id;
       this.Usuario = Usuario;
       this.Password = Password;

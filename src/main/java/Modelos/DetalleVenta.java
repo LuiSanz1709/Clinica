@@ -10,7 +10,7 @@ package Modelos;
  * @author SL03483514
  */
 public class DetalleVenta {
-       private final Integer id;
+    private final Integer id;
     private Integer id_venta;
     private Integer id_Articulo;
     private double importe;
@@ -32,5 +32,33 @@ public class DetalleVenta {
         this.cantidad=cantidad;
     }
     
+     
+    public void setDetalleVentaTem(int aInt, double aDouble, int i) {
+        this.id_Articulo=id_Articulo;
+        this.importe=importe;
+        this.cantidad=cantidad;}
+    
+    public Integer getIdVenta(){
+        return this.id_venta;
+
+    }
+    
+     public Integer getIdArticulo(){
+        return this.id_Articulo;
+
+    }
+     public Double getImporte(){
+        return this.importe;
+
+    }
+      public Integer getCantidad(){
+        return this.cantidad;
+
+    }
+    
+     
     
 }
+
+
+
