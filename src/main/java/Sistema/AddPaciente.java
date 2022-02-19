@@ -174,8 +174,11 @@ public class AddPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
   public void reload(){
          try {
+               TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
             TPaciente.setModel(Principal.s.GetPacientes(Principal.c.obtener()));
-                    
+            
+             //TPaciente.removeColumn(TPaciente.getColumnModel().getColumn(0));
+            
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -239,7 +242,8 @@ public class AddPaciente extends javax.swing.JFrame {
                 break;
             default:
                 
-            Principal.paciente.setText(" "+TPaciente.getValueAt(Fila, 0).toString());
+            Principal.paciente.setText(" "+TPaciente.getValueAt(Fila, 1).toString());
+            Servicios.p = Integer.parseInt(TPaciente.getValueAt(Fila, 0).toString());
             this.setVisible(false);
             
         }

@@ -8,9 +8,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +62,9 @@ try{
         {   
             fichero.createNewFile();
             fw = new FileWriter(fichero);
+              for(int cabecera=0;cabecera<CabezaLineas.size();cabecera++ ){
+            fw.write(CabezaLineas.get(cabecera));
+            }
             bw = new BufferedWriter(fw);
             bw.write("MOTEL OASIS"+"\r\n"
             +"AV ESPINOZA 267, COL OBRERA\r\n"
@@ -73,6 +78,8 @@ try{
         }
         else if(fichero.exists())
         {
+            
+          
             int R=0;
             String archivo2 = "C:\\MotelOasis\\Tickets\\#LPT1.txt";
             String D2=null;
@@ -101,8 +108,8 @@ try{
             bw.close();
         }
     
-//FileWriter imp = new FileWriter("LPT1");
-FileWriter imp = new FileWriter(impresora);
+FileWriter imp = new FileWriter("RICOH Edf_Admin Color");
+//FileWriter imp = new FileWriter(impresora);
 char[] Caracter = new char[] { 0x1B, 'R',18};
 imp.write(Caracter);
 for(int cabecera=0;cabecera<CabezaLineas.size();cabecera++ ){
@@ -129,6 +136,9 @@ char ABRIR_GAVETA[]={(char)27,(char)112,(char)0,(char)10,(char)100};
 imp.write(ABRIR_GAVETA);
 }
 imp.close();
+FileOutputStream os = new FileOutputStream("C:\\MotelOasis\\Tickets\\#LPT1.txt");
+PrintStream ps = new PrintStream(os);
+JOptionPane.showMessageDialog(null,"Error al Imprimi");
 //limpio las listas que contiene los datos
 CabezaLineas.removeAll(CabezaLineas);
 subCabezaLineas.removeAll(subCabezaLineas);

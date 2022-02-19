@@ -4,6 +4,7 @@ Sistema\Principal$9.class
 Modelos\Paciente.class
 Sistema\Principal$5.class
 Sistema\Principal$21.class
+Sistema\Principal$31.class
 Servicios\RenderTabla.class
 Sistema\Pago$1.class
 Ticket\OrderItem.class
@@ -16,6 +17,7 @@ Sistema\Principal$11.class
 Ticket\OrderTotal.class
 Sistema\Principal.class
 Sistema\Principal$24.class
+Sistema\Principal$32.class
 com\crud\crud\Login\Login$1.class
 Sistema\AddUsuario$1.class
 Sistema\AddPaciente$4.class
@@ -34,7 +36,9 @@ Modelos\Tabla.class
 Modelos\Usuario.class
 Sistema\AddPaciente$1.class
 Sistema\AddUsuario$2.class
+Sistema\AddArticulo$4.class
 Sistema\Principal$17.class
+Sistema\Principal$33.class
 Sistema\Principal$23.class
 Sistema\Principal$13.class
 com\crud\crud\Login\Login.class
@@ -50,11 +54,14 @@ Sistema\Principal$1.class
 Sistema\Principal$8.class
 Connection\Conexion.class
 Sistema\Principal$14.class
+Sistema\Principal$34.class
+Sistema\AddArticulo$3.class
 Sistema\AddPaciente$5.class
 Modelos\Venta.class
 com\crud\crud\Login\Login$2.class
 Sistema\Principal$22.class
 Sistema\Principal$28.class
+Sistema\Principal$30.class
 Sistema\Principal$10.class
 Sistema\AddArticulo.class
 Sistema\Principal$25.class

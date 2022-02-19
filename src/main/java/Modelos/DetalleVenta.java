@@ -34,25 +34,25 @@ public class DetalleVenta {
     
      
     public void setDetalleVentaTem(int aInt, double aDouble, int i) {
-        this.id_Articulo=id_Articulo;
-        this.importe=importe;
-        this.cantidad=cantidad;}
+        this.id_Articulo=aInt;
+        this.importe=aDouble;
+        this.cantidad=i;}
     
     public Integer getIdVenta(){
-        return this.id_venta;
+        return id_venta;
 
     }
     
      public Integer getIdArticulo(){
-        return this.id_Articulo;
+        return id_Articulo;
 
     }
      public Double getImporte(){
-        return this.importe;
+        return importe;
 
     }
       public Integer getCantidad(){
-        return this.cantidad;
+        return cantidad;
 
     }
     

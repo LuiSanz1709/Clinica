@@ -7,12 +7,19 @@ package Sistema;
 
 import Connection.Conexion;
 import Modelos.Articulo;
+import Modelos.DetalleVenta;
 import Modelos.Paciente;
 import Servicios.Servicios;
+import static Sistema.AddPaciente.TPaciente;
+import static Sistema.Principal.c;
+import static Sistema.Principal.s;
+import static Sistema.Principal.t;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -63,6 +70,11 @@ public class AddArticulo extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        JArticulo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JArticuloMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(JArticulo);
 
         jLabel1.setText("Articulo:");
@@ -160,11 +172,55 @@ public class AddArticulo extends javax.swing.JFrame {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+ public DefaultTableModel AddArt(String id,double precio,DefaultTableModel art){
+           
+             Object d[] = new Object[3];
+             d[0]=id;
+             d[1]=precio;
+             d[2]=1;
+             art.addRow(d);
+              Principal.t=Principal.t+precio;
+             Principal.tot.setText(Principal.t+" ");
+             
+        return art;
+  }
+    private void JArticuloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JArticuloMouseClicked
+        // TODO add your handling code here:
+        
+           int col= JArticulo.getSelectedColumn();
+        int Fila = JArticulo.getSelectedRow();
+        switch (col){
+            case 2: 
+                showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 0).toString());
+                break;
+            case 3:
+                showMessageDialog(null,"Desea Eliminar? "+JArticulo.getValueAt(Fila, 0).toString());
+                break;
+            default:
+                
+                //agregar dv falta agregar a arts*************************************************************************************************
+             
+                 boolean val=Principal.s.getArticulo2(Integer.parseInt(JArticulo.getValueAt(Fila, 0).toString()),Double.parseDouble(JArticulo.getValueAt(Fila, 3).toString()));
+                 if(val){
+                      showMessageDialog(null,"repetido");
+                 }else{
+                 Principal.dventa.setModel(this.AddArt((JArticulo.getValueAt(Fila, 1).toString()),Double.parseDouble(JArticulo.getValueAt(Fila, 3).toString()), Principal.da));
+                 //Agregar DV
+                 DefaultTableModel dtmEjemplo = new DefaultTableModel(0,
+                                                             0);
+ 
+                 Principal.dventa=new JTable(dtmEjemplo){
+                 public boolean isCellEditable(int rowIndex, int vColIndex) {
+                     return false;
+                 }};
+                 this.setVisible(false);
+                 }
+        } 
+    }//GEN-LAST:event_JArticuloMouseClicked
   public void reload(){
          try {
-           Servicios s= new Servicios();
-           Conexion c=new Conexion();
-            JArticulo.setModel(s.GetArticulos(c.obtener()));
+          
+            JArticulo.setModel(Principal.s.GetArticulos(Principal.c.obtener()));
                     
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
