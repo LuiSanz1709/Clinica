@@ -9,6 +9,7 @@ import Connection.Conexion;
 import Modelos.Articulo;
 import Modelos.DetalleVenta;
 import Modelos.Paciente;
+import Servicios.RenderTabla;
 import Servicios.Servicios;
 import static Sistema.AddPaciente.TPaciente;
 import static Sistema.Principal.c;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -32,7 +34,10 @@ public class AddArticulo extends javax.swing.JFrame {
      */
     public AddArticulo() {
         initComponents();
+        JArticulo.setDefaultRenderer(Object.class,new RenderTabla());
          this.reload();
+         
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -57,17 +62,21 @@ public class AddArticulo extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        JArticulo = new javax.swing.JTable(){
+
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
         JArticulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         JArticulo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -84,6 +93,12 @@ public class AddArticulo extends javax.swing.JFrame {
         jLabel3.setText("Precio:");
 
         jLabel4.setText("Descripcion:");
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -108,7 +123,7 @@ public class AddArticulo extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(38, 38, 38)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,6 +173,9 @@ public class AddArticulo extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+         if((jTextField2.getText().equals("") || jTextField1.getText().equals("") ||  jTextField3.getText().equals("") || jTextArea1.getText().equals("") )){
+            showMessageDialog(null, "campos vacios");
+        }else{
         Articulo a=new Articulo();
         a.setArticulo(jTextField1.getText(),(jTextField3.getText()), Double.parseDouble(jTextField2.getText()),jTextArea1.getText());
         
@@ -170,7 +188,7 @@ public class AddArticulo extends javax.swing.JFrame {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }}
     }//GEN-LAST:event_jButton1ActionPerformed
  public DefaultTableModel AddArt(String id,double precio,DefaultTableModel art){
            
@@ -190,10 +208,10 @@ public class AddArticulo extends javax.swing.JFrame {
            int col= JArticulo.getSelectedColumn();
         int Fila = JArticulo.getSelectedRow();
         switch (col){
-            case 2: 
+            case 5: 
                 showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 0).toString());
                 break;
-            case 3:
+            case 6:
                 showMessageDialog(null,"Desea Eliminar? "+JArticulo.getValueAt(Fila, 0).toString());
                 break;
             default:
@@ -217,11 +235,28 @@ public class AddArticulo extends javax.swing.JFrame {
                  }
         } 
     }//GEN-LAST:event_JArticuloMouseClicked
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+         int key = evt.getKeyChar();
+        boolean numeros=key >=48 && key <=57;
+        boolean punto= key ==46;
+        if (!(numeros || punto )){
+            evt.consume();
+        }
+        
+    }//GEN-LAST:event_jTextField2KeyTyped
   public void reload(){
          try {
           
             JArticulo.setModel(Principal.s.GetArticulos(Principal.c.obtener()));
-                    
+            
+            TableColumn columna = JArticulo.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            JArticulo.doLayout();
+            
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

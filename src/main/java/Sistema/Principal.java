@@ -20,16 +20,21 @@ import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -48,21 +53,47 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal(Usuario usu) {
        
-        this.setUndecorated(true);
-        initComponents();
-        this.setLocationRelativeTo(null);
-        u=usu;
-        jTable2.setDefaultRenderer(Object.class,new RenderTabla());
-        jLabel2.setText("Bienvenido: "+usu.getUsuario());
-        titulo.setText("Ventas");
-        da.addColumn("articulo");
-        da.addColumn("precio");
-        da.addColumn("cantidad");
-        da.addColumn("total");
-        t=0;
-       
+     
+            this.setUndecorated(true);
+            initComponents();
+            this.setLocationRelativeTo(null);
+            u=usu;
+            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
+            jLabel2.setText("Bienvenido: "+usu.getUsuario());
+            titulo.setText("Ventas");
+            da.addColumn("articulo");
+            da.addColumn("precio");
+            da.addColumn("cantidad");
+            da.addColumn("total");
+            t=0;
+            jTextField2.setText(""); jPasswordField1.setText("");  
+            addItem();
+            if (usu.getRol()==0){
+                BlockRol();
+            }
+           
     }
        
+    
+    public void BlockRol(){
+        
+    }
+    
+    public void addItem(){
+         try {
+             System.out.println("addItem");
+                ResultSet resultado =s.getPago(c.obtener());
+                while(resultado.next()){
+                 pago.addItem(resultado.getString("forma_de_pago"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }
+    
     Principal() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -73,7 +104,11 @@ public class Principal extends javax.swing.JFrame {
           
             jTable2.setDefaultRenderer(Object.class,new RenderTabla());
             jTable2.setModel(s.recuperarTodas(c.obtener()));
-                    
+            TableColumn columna = jTable2.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            jTable2.doLayout();        
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -131,6 +166,8 @@ public class Principal extends javax.swing.JFrame {
         tot = new javax.swing.JLabel();
         iva = new javax.swing.JLabel();
         subtot = new javax.swing.JLabel();
+        jButton12 = new javax.swing.JButton();
+        pago = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -141,6 +178,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
+        rol = new javax.swing.JComboBox<>();
+        jLabel23 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
@@ -295,7 +334,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -310,7 +349,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 210, 50));
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 200, 50));
 
         jPanel7.setBackground(new java.awt.Color(204, 204, 255));
         jPanel7.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -338,7 +377,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -353,7 +392,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 210, 50));
+        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 200, 50));
 
         jPanel11.setBackground(new java.awt.Color(204, 204, 255));
         jPanel11.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -381,7 +420,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
@@ -396,7 +435,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 210, 50));
+        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 200, 50));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 710));
 
@@ -431,7 +470,7 @@ public class Principal extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
-                .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -462,6 +501,10 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(249, 249, 235));
 
+        dventa = new javax.swing.JTable(){
+
+            public boolean isCellEditable(int row, int column) { return column == 2; }
+        };
         dventa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -476,6 +519,34 @@ public class Principal extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        dventa.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                dventaFocusGained(evt);
+            }
+        });
+        dventa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dventaMouseClicked(evt);
+            }
+        });
+        dventa.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                dventaInputMethodTextChanged(evt);
+            }
+        });
+        dventa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                dventaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                dventaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                dventaKeyTyped(evt);
             }
         });
         jScrollPane2.setViewportView(dventa);
@@ -551,6 +622,13 @@ public class Principal extends javax.swing.JFrame {
 
         subtot.setText("0.00");
 
+        jButton12.setText("jButton12");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -563,15 +641,16 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(paciente, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(439, 439, 439)
+                                .addGap(424, 424, 424)
                                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tot, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(285, 285, 285)
+                                .addGap(270, 270, 270)
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel8Layout.createSequentialGroup()
@@ -589,23 +668,30 @@ public class Principal extends javax.swing.JFrame {
                                         .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(art, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(art, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pago, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(66, 66, 66))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(391, 391, 391)
+                .addComponent(jButton12)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel13)
-                .addGap(6, 6, 6)
+                .addGap(5, 5, 5)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(pago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(art, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -631,6 +717,8 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
+                .addComponent(jButton12)
                 .addContainerGap())
         );
 
@@ -702,6 +790,10 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel20.setText("Contraseña:");
 
+        rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recepcionista", "Administrador" }));
+
+        jLabel23.setText("Rol:");
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -719,9 +811,12 @@ public class Principal extends javax.swing.JFrame {
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel20))
+                                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel20)))
                                 .addGap(53, 53, 53)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rol, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextField2)
                                     .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)))))
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -745,8 +840,12 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel20)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23))
+                .addGap(22, 22, 22)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(254, Short.MAX_VALUE))
+                .addContainerGap(213, Short.MAX_VALUE))
         );
 
         jTabbedPane5.addTab("tab2", jPanel9);
@@ -759,6 +858,18 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel22.setText("Direccion:");
 
+        nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nombreKeyTyped(evt);
+            }
+        });
+
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                telefonoKeyTyped(evt);
+            }
+        });
+
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField5KeyReleased(evt);
@@ -768,6 +879,14 @@ public class Principal extends javax.swing.JFrame {
         edad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 edadActionPerformed(evt);
+            }
+        });
+        edad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edadKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                edadKeyTyped(evt);
             }
         });
 
@@ -786,6 +905,11 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        TPaciente = new javax.swing.JTable(){
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
         TPaciente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -881,6 +1005,11 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel16.setBackground(new java.awt.Color(249, 249, 235));
 
+        JArticulo = new javax.swing.JTable(){
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
         JArticulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -889,6 +1018,11 @@ public class Principal extends javax.swing.JFrame {
 
             }
         ));
+        JArticulo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JArticuloMouseClicked(evt);
+            }
+        });
         jScrollPane6.setViewportView(JArticulo);
 
         jButton11.setText("Agregar");
@@ -905,6 +1039,12 @@ public class Principal extends javax.swing.JFrame {
         jLabel28.setText("Precio:");
 
         jLabel29.setText("Descripcion:");
+
+        precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioKeyTyped(evt);
+            }
+        });
 
         descripcion.setColumns(20);
         descripcion.setRows(5);
@@ -949,7 +1089,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TxtBuscaArt, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 827, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 151, Short.MAX_VALUE))))
+                        .addGap(0, 269, Short.MAX_VALUE))))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1012,21 +1152,25 @@ public class Principal extends javax.swing.JFrame {
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
         
+        if (u.getRol()==1){
+               
             jTabbedPane5.setSelectedIndex(1);
             this.Limpieza(jPanel6);
-            
-        titulo.setText("Usuarios");
-          
-        try {
-          
-            jTable2.setModel(s.recuperarTodas(c.obtener()));
-                    
-            } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            titulo.setText("Usuarios");
+            try {
+
+                jTable2.setModel(s.recuperarTodas(c.obtener()));
+                TableColumn columna = jTable2.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            jTable2.doLayout();     
+                } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-            
        
         
     }//GEN-LAST:event_jPanel6MouseClicked
@@ -1095,7 +1239,11 @@ public class Principal extends javax.swing.JFrame {
          try {
                TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
             TPaciente.setModel(Principal.s.GetPacientes(Principal.c.obtener()));
-            
+            TableColumn columna = TPaciente.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            TPaciente.doLayout();     
              //TPaciente.removeColumn(TPaciente.getColumnModel().getColumn(0));
             
             } catch (SQLException ex) {
@@ -1120,10 +1268,13 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         //AddUsuario usu=new AddUsuario();
         //usu.setVisible(true);
+        
+        if((jTextField2.getText().equals("") || jPasswordField1.getText().equals(""))){
+            showMessageDialog(null, "campos vacios");
+        }else{
         JButton boton1= new JButton("mod");
-         Usuario u=new Usuario();
-        u.setUsuario(jTextField2.getText(), jPasswordField1.getText());
-       
+        Usuario u=new Usuario();
+        u.setUsuario(jTextField2.getText(), jPasswordField1.getText(),rol.getSelectedIndex());
         Servicios s= new Servicios();
       
         try {
@@ -1134,13 +1285,18 @@ public class Principal extends javax.swing.JFrame {
             jTable2.setDefaultRenderer(Object.class,new RenderTabla());
             
             jTable2.setModel(s.recuperarTodas(Conexion.obtener()));
+             TableColumn columna = jTable2.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            jTable2.doLayout(); 
            
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-           jTextField2.setText(""); jPasswordField1.setText("");
+           }
      
         //this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -1157,6 +1313,10 @@ public class Principal extends javax.swing.JFrame {
              showMessageDialog(null, "Lista Vacia");
              }else{
              showMessageDialog(null, "Venta Realizada");
+             
+             imprimirTicket();
+             s.ticket();
+             
              Limpiar();
              }
         } catch (SQLException ex) {
@@ -1176,7 +1336,417 @@ public class Principal extends javax.swing.JFrame {
         //v.setVenta(1, 1, 100);
        
         
-        System.out.println("hola");
+   
+        
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    
+    public void imprimirTicket(){
+        
+        Ticket ticket=new Ticket();
+        ticket.AddCabecera("CLINICA FABELA");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("EXPEDIDO EN: ----------");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("AV. TAMAULIPAS NO. 5 LOC. 101");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera(ticket.DibujarLinea(29));
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("LIMA, XXXXXXXXXXXX");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("RFC: CSI-020226-MV4");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera("Caja # 1 - Ticket # 1");
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera("LE ATENDIO: JUAN");
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DibujarLinea(29));
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddItem("1", "Articulo Prueba", "15.00", "");
+        ticket.AddItem("", "", ticket.DarEspacio(), "");
+        ticket.AddItem("2", "Articulo Prueba", "25.00", "");
+        ticket.AddItem("", "", ticket.DarEspacio(), "");
+        ticket.AddTotal("", ticket.DibujarLinea(29));
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("SUBTOTAL", "29.75");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("IVA", "5.25");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("TOTAL", "35.00");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("RECIBIDO", "50.00");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("CAMBIO", "15.00");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddPieLinea(ticket.DibujarLinea(29));
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("EL xxx ES NUESTRA PASION...");
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("VIVE LA EXPERIENCIA EN xxx");
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("Gracias por su visita");
+        ticket.AddPieLinea(ticket.DarEspacio());
+        
+        ticket.ImprimirDocumento("LPT2",false);
+    }
+    
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        Limpiar();
+        s.clean();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        AddPaciente usu=new AddPaciente();
+        usu.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+
+       
+        art.getText();
+
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+            AddArticulo a=new AddArticulo();
+        a.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void artKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_artKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_artKeyPressed
+
+    private void artActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_artActionPerformed
+        // TODO add your handling code here:
+        
+        //Busca Art
+      
+        Articulo a=new Articulo();
+        try {
+            a=s.getArticulo(art.getText(),c.obtener());
+            if(a.getID()==0){
+                 showMessageDialog(null,"repetido");
+                 
+            }else{
+            dventa.setModel(this.AddArt(a,da));
+            
+            art.setText("");
+            }
+            //Agregar DV
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (NullPointerException ex) {
+              showMessageDialog(null,"no encontrado");
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        DefaultTableModel dtmEjemplo = new DefaultTableModel(0,
+                                                             0);
+ 
+        dventa=new JTable(dtmEjemplo){
+        public boolean isCellEditable(int rowIndex, int vColIndex) {
+            return false;
+        }}; //return false: Desabilitar ed
+        
+        
+        //Agregar Venta
+        
+        //DetalleVenta dv=new DetalleVenta();
+        //dv.setDetalleVenta(WIDTH, WAIT_CURSOR, ABORT, WIDTH);
+       // Integer id_venta, Integer id_Articulo,double importe, Integer cantidad
+        //s. art.getText();
+    }//GEN-LAST:event_artActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+        int col= jTable2.getSelectedColumn();
+        int Fila = jTable2.getSelectedRow();
+        switch (col){
+            case 3: 
+                //Cambiar Contraseña Usuario
+                //Roles de usuario
+                //
+                showMessageDialog(null,"Desea Editar? "+jTable2.getValueAt(Fila, 1).toString());
+                
+                break;
+            case 4:
+                int input = JOptionPane.showConfirmDialog(null, "Desea Eliminar? "+jTable2.getValueAt(Fila, 1).toString());
+                if(input==0){
+                    //Eliminar usuario
+            try {
+                 showMessageDialog(null,"Eliminado "+jTable2.getValueAt(Fila, 0).toString());
+                s.eliminarUsuario(c.obtener(),(Integer.parseInt(jTable2.getValueAt(Fila, 0).toString())));
+                reload();
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                }
+                //showMessageDialog(null,"Desea Eliminar? "+jTable2.getValueAt(Fila, 0).toString());
+                break;
+            default:
+                        
+            
+        }
+            
+         //showMessageDialog(null,jTable2.getValueAt(Fila, 0).toString());
+         //showMessageDialog(null,jTable2.getValueAt(Fila, 1).toString());
+         //showMessageDialog(null,jTable2.getValueAt(Fila, 2).toString());
+         //showMessageDialog(null, jTable2.getSelectedRow());
+        
+    }//GEN-LAST:event_jTable2MouseClicked
+
+     public DefaultTableModel AddArt(Articulo a,DefaultTableModel art) throws SQLException{
+             Object d[] = new Object[4];
+             d[0]=a.getArticulo();
+             d[1]=a.getPrecio();
+             d[2]=1;
+             d[3]=(a.getPrecio())*1;
+             art.addRow(d);
+             t=t+a.getPrecio();
+             tot.setText(t+" ");
+        return art;
+  }
+    
+    
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField1ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jTextField1ComponentAdded
+
+    }//GEN-LAST:event_jTextField1ComponentAdded
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+      
+         
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+  
+        
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+           String usu=jTextField1.getText();
+           if (usu.isEmpty()){
+        reload();
+           }else{
+              try {
+           
+            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
+            jTable2.setModel(s.recuperarUsu(c.obtener(),usu));   
+            TableColumn columna = jTable2.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            jTable2.doLayout(); 
+            } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+           }
+        
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+          if((nombre.getText().equals("") || telefono.getText().equals("") || edad.getText().equals("") || direccion.getText().equals(""))){
+            showMessageDialog(null, "campos vacios");
+        }else{
+        Paciente p=new Paciente();
+        p.setPaciente(nombre.getText(), telefono.getText(),Integer.parseInt(edad.getText()),direccion.getText());
+        try {
+            Principal.s.AddPaciente( Principal.c.obtener() , p);
+            //  Servicios.p=p;
+            showMessageDialog(null, "Agregado con Exito");
+            //this.setVisible(false);
+            reloadPac();
+        } catch (SQLException ex) {
+            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void TPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TPacienteMouseClicked
+        // TODO add your handling code here:
+        int col= TPaciente.getSelectedColumn();
+        int Fila = TPaciente.getSelectedRow();
+        switch (col){
+            case 5:
+            showMessageDialog(null,"Desea Editar? "+TPaciente.getValueAt(Fila, 0).toString());
+            break;
+            case 6:
+            showMessageDialog(null,"Desea Eliminar? "+TPaciente.getValueAt(Fila, 0).toString());
+            break;
+            default:
+
+          
+
+        }
+
+    }//GEN-LAST:event_TPacienteMouseClicked
+
+    private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
+        // TODO add your handling code here:
+
+        
+        if (jTextField5.getText().isEmpty()){
+            reloadPac();
+        }else{
+            try {
+                TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
+                TPaciente.setModel(Principal.s.recuperarPac(Principal.c.obtener(),jTextField5.getText()));
+                  TableColumn columna = TPaciente.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            TPaciente.doLayout(); 
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jTextField5KeyReleased
+
+    private void edadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_edadActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        
+        if(articulo.getText().equals("") || referencia.getText().equals("") ||  precio.getText().equals("") ||  descripcion.getText().equals("")){
+             showMessageDialog(null, "Revise campos vacios");
+        }else{
+             Articulo a=new Articulo();
+        a.setArticulo(articulo.getText(),(referencia.getText()), Double.parseDouble(precio.getText()),descripcion.getText());
+
+        try {
+            Principal.s.addArticulo(Principal.c.obtener() , a);
+            showMessageDialog(null, "Agregado con Exito");
+            limpiararticulos();
+            reloadArt();
+           // this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+       
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void limpiararticulos(){
+        articulo.setText("");
+        referencia.setText("");
+        precio.setText("");
+        descripcion.setText("");
+    }
+    
+    private void TxtBuscaArtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtBuscaArtKeyReleased
+        // TODO add your handling code here:
+        
+       
+        
+        if (TxtBuscaArt.getText().isEmpty()){
+            reloadArt();
+        }else{
+            try {
+                JArticulo.setDefaultRenderer(Object.class,new RenderTabla());
+                JArticulo.setModel(Principal.s.recuperarArt(Principal.c.obtener(),TxtBuscaArt.getText()));
+                TableColumn columna = JArticulo.getColumnModel().getColumn(0);
+        columna.setMaxWidth(0);
+        columna.setMinWidth(0);
+        columna.setPreferredWidth(0);
+        JArticulo.doLayout();
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }//GEN-LAST:event_TxtBuscaArtKeyReleased
+
+    private void JArticuloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JArticuloMouseClicked
+        // TODO add your handling code here:
+         int col= JArticulo.getSelectedColumn();
+        int Fila = JArticulo.getSelectedRow();
+        switch (col){
+            case 5:
+            showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 0).toString());
+            break;
+            case 6:
+            showMessageDialog(null,"Desea Eliminar? "+JArticulo.getValueAt(Fila, 0).toString());
+            break;
+            default:
+
+          
+
+        }
+
+        
+    }//GEN-LAST:event_JArticuloMouseClicked
+
+    private void dventaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dventaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dventaKeyReleased
+
+    private void dventaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dventaKeyTyped
+        // TODO add your handling code here:
+   
+    }//GEN-LAST:event_dventaKeyTyped
+
+    private void dventaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dventaKeyPressed
+
+        
+        
+    }//GEN-LAST:event_dventaKeyPressed
+
+    private void dventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dventaMouseClicked
+        int col= dventa.getSelectedColumn();
+        showMessageDialog(null,"cantidad? "+col);
+        int Fila = dventa.getSelectedRow();
+        switch (col){
+            case 2:
+                //showMessageDialog(null,"cantidad? ");
+                String cantidad;
+                cantidad = JOptionPane.showInputDialog("¿Cantidad de: ");
+                break;
+            default:
+        }
+    }//GEN-LAST:event_dventaMouseClicked
+
+    private void dventaInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_dventaInputMethodTextChanged
+        // TODO add your handling code here:
+         showMessageDialog(null,"Desea q? ");
+    }//GEN-LAST:event_dventaInputMethodTextChanged
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+        System.out.println("LPT1");
         Ticket ticket=new Ticket();
         ticket.AddCabecera("RESTAURANTE XXXX");
         ticket.AddCabecera(ticket.DarEspacio());
@@ -1224,259 +1794,79 @@ public class Principal extends javax.swing.JFrame {
         ticket.AddPieLinea(ticket.DarEspacio());
         ticket.AddPieLinea("Gracias por su visita");
         ticket.AddPieLinea(ticket.DarEspacio());
-        System.out.println();
-        ticket.ImprimirDocumento("RICOH Edf_Admin Color",false);
         
+        ticket.ImprimirDocumento("LPT2",false);
+    }//GEN-LAST:event_jButton12ActionPerformed
 
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyTyped
         // TODO add your handling code here:
-        Limpiar();
-        s.clean();
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        AddPaciente usu=new AddPaciente();
-        usu.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        // TODO add your handling code here:
-
-       
-        art.getText();
-
-    }//GEN-LAST:event_jButton2MouseClicked
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-            AddArticulo a=new AddArticulo();
-        a.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void artKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_artKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_artKeyPressed
-
-    private void artActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_artActionPerformed
-        // TODO add your handling code here:
-        
-        //Busca Art
-      
-        Articulo a=new Articulo();
-        try {
-            a=s.getArticulo(art.getText(),c.obtener());
-            if(a.getID()==0){
-                 showMessageDialog(null,"repetido");
-                 
-            }else{
-            dventa.setModel(this.AddArt(a,da));
-            art.setText("");
-            }
-            //Agregar DV
-        } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (NullPointerException ex) {
-              showMessageDialog(null,"no encontrado");
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        int key = evt.getKeyChar();
+        boolean numeros=key >=48 && key <=57;
+        if (!numeros){
+            evt.consume();
         }
-        
-        DefaultTableModel dtmEjemplo = new DefaultTableModel(0,
-                                                             0);
- 
-        dventa=new JTable(dtmEjemplo){
-        public boolean isCellEditable(int rowIndex, int vColIndex) {
-            return false;
-        }}; //return false: Desabilitar ed
-        
-        
-        //Agregar Venta
-        
-        //DetalleVenta dv=new DetalleVenta();
-        //dv.setDetalleVenta(WIDTH, WAIT_CURSOR, ABORT, WIDTH);
-       // Integer id_venta, Integer id_Articulo,double importe, Integer cantidad
-        //s. art.getText();
-    }//GEN-LAST:event_artActionPerformed
-
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // TODO add your handling code here:
-        int col= jTable2.getSelectedColumn();
-        int Fila = jTable2.getSelectedRow();
-        switch (col){
-            case 1: 
-                showMessageDialog(null,"Desea Editar? "+jTable2.getValueAt(Fila, 0).toString());
-                break;
-            case 2:
-                showMessageDialog(null,"Desea Eliminar? "+jTable2.getValueAt(Fila, 0).toString());
-                break;
-            default:
-                        
+        if(telefono.getText().trim().length()==10){
             
+            evt.consume();
         }
+        
+    }//GEN-LAST:event_telefonoKeyTyped
+
+    private void edadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_edadKeyPressed
+
+    private void edadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadKeyTyped
+        // TODO add your handling code here:
+          int key = evt.getKeyChar();
+        boolean numeros=key >=48 && key <=57;
+        if (!numeros){
+            evt.consume();
+        }
+        if(edad.getText().trim().length()==3){
             
-         //showMessageDialog(null,jTable2.getValueAt(Fila, 0).toString());
-         //showMessageDialog(null,jTable2.getValueAt(Fila, 1).toString());
-         //showMessageDialog(null,jTable2.getValueAt(Fila, 2).toString());
-         //showMessageDialog(null, jTable2.getSelectedRow());
-        
-    }//GEN-LAST:event_jTable2MouseClicked
-
-     public DefaultTableModel AddArt(Articulo a,DefaultTableModel art) throws SQLException{
-             Object d[] = new Object[3];
-             d[0]=a.getArticulo();
-             d[1]=a.getPrecio();
-             d[2]=1;
-             art.addRow(d);
-             t=t+a.getPrecio();
-             tot.setText(t+" ");
-        return art;
-  }
-    
-    
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1FocusGained
-
-    private void jTextField1ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jTextField1ComponentAdded
-
-    }//GEN-LAST:event_jTextField1ComponentAdded
-
-    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
-        // TODO add your handling code here:
-      
-         
-    }//GEN-LAST:event_jTextField1KeyPressed
-
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
-  
-        
-    }//GEN-LAST:event_jTextField1KeyTyped
-
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-           String usu=jTextField1.getText();
-           if (usu.isEmpty()){
-        reload();
-           }else{
-              try {
-           
-            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
-            jTable2.setModel(s.recuperarUsu(c.obtener(),usu));   
-          
-            } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-           }
-        
-    }//GEN-LAST:event_jTextField1KeyReleased
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-
-        Paciente p=new Paciente();
-        p.setPaciente(nombre.getText(), telefono.getText(),Integer.parseInt(edad.getText()),direccion.getText());
-        try {
-            Principal.s.AddPaciente( Principal.c.obtener() , p);
-            //  Servicios.p=p;
-            showMessageDialog(null, "Agregado con Exito");
-            //this.setVisible(false);
-            reloadPac();
-        } catch (SQLException ex) {
-            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            evt.consume();
         }
+    }//GEN-LAST:event_edadKeyTyped
 
-    }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void TPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TPacienteMouseClicked
+    private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
         // TODO add your handling code here:
-        int col= TPaciente.getSelectedColumn();
-        int Fila = TPaciente.getSelectedRow();
+        int key = evt.getKeyChar();
+
+    boolean mayusculas = key >= 65 && key <= 90;
+    boolean minusculas = key >= 97 && key <= 122;
+    boolean espacio = key == 32;
+            
+     if (!(minusculas || mayusculas || espacio)){
+        evt.consume();
+    }
+    }//GEN-LAST:event_nombreKeyTyped
+
+    private void precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioKeyTyped
+        // TODO add your handling code here:
+        int key = evt.getKeyChar();
+        boolean numeros=key >=48 && key <=57;
+        boolean punto= key ==46;
+        if (!(numeros || punto )){
+            evt.consume();
+        }
+        
+    }//GEN-LAST:event_precioKeyTyped
+
+    private void dventaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dventaFocusGained
+        // TODO add your handling code here:
+        int col= dventa.getSelectedColumn();
+        
+        int Fila = dventa.getSelectedRow();
         switch (col){
             case 2:
-            showMessageDialog(null,"Desea Editar? "+TPaciente.getValueAt(Fila, 0).toString());
-            break;
-            case 3:
-            showMessageDialog(null,"Desea Eliminar? "+TPaciente.getValueAt(Fila, 0).toString());
-            break;
+                //showMessageDialog(null,"cantidad? ");
+                String cantidad;
+                cantidad = JOptionPane.showInputDialog("¿focus de: ");
+                break;
             default:
-
-          
-
         }
-
-    }//GEN-LAST:event_TPacienteMouseClicked
-
-    private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
-        // TODO add your handling code here:
-
-        
-        if (jTextField5.getText().isEmpty()){
-            reloadPac();
-        }else{
-            try {
-                TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
-                TPaciente.setModel(Principal.s.recuperarPac(Principal.c.obtener(),jTextField5.getText()));
-
-            } catch (SQLException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jTextField5KeyReleased
-
-    private void edadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edadActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-        Articulo a=new Articulo();
-        a.setArticulo(articulo.getText(),(referencia.getText()), Double.parseDouble(precio.getText()),descripcion.getText());
-
-        try {
-            Principal.s.addArticulo(Principal.c.obtener() , a);
-            showMessageDialog(null, "Agregado con Exito");
-            reloadArt();
-           // this.setVisible(false);
-        } catch (SQLException ex) {
-            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton11ActionPerformed
-
-    private void TxtBuscaArtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtBuscaArtKeyReleased
-        // TODO add your handling code here:
-        
-       
-        
-        if (TxtBuscaArt.getText().isEmpty()){
-            reloadArt();
-        }else{
-            try {
-                JArticulo.setDefaultRenderer(Object.class,new RenderTabla());
-                JArticulo.setModel(Principal.s.recuperarArt(Principal.c.obtener(),TxtBuscaArt.getText()));
-
-            } catch (SQLException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-    }//GEN-LAST:event_TxtBuscaArtKeyReleased
+    }//GEN-LAST:event_dventaFocusGained
    
            
       
@@ -1484,9 +1874,13 @@ public class Principal extends javax.swing.JFrame {
   
     public void reloadArt(){
          try {
-          
-            JArticulo.setModel(Principal.s.GetArticulos(Principal.c.obtener()));
-                    
+          JArticulo.setDefaultRenderer(Object.class,new RenderTabla());
+          JArticulo.setModel(Principal.s.GetArticulos(Principal.c.obtener()));
+          TableColumn columna = JArticulo.getColumnModel().getColumn(0);
+        columna.setMaxWidth(0);
+        columna.setMinWidth(0);
+        columna.setPreferredWidth(0);
+        JArticulo.doLayout();
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -1530,8 +1924,7 @@ public class Principal extends javax.swing.JFrame {
     
     
     public void Limpieza(JPanel a){
-        //jPanel5.setBackground(new Color(204,204,255));
-        //jPanel6.setBackground(new Color(204,204,255));
+        //jPanel5.setBackground(new Color(204,204,255));        //jPanel6.setBackground(new Color(204,204,255));
         //jPanel7.setBackground(new Color(204,204,255));
         a.setBackground(new Color(240,240,240));
     }
@@ -1566,6 +1959,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
@@ -1586,6 +1980,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -1628,8 +2023,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField nombre;
     public static javax.swing.JLabel paciente;
+    private javax.swing.JComboBox<String> pago;
     private javax.swing.JTextField precio;
     private javax.swing.JTextField referencia;
+    private javax.swing.JComboBox<String> rol;
     private javax.swing.JLabel subtot;
     private javax.swing.JTextField telefono;
     private javax.swing.JLabel titulo;

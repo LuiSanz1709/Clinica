@@ -24,6 +24,8 @@ public class AddUsuario extends javax.swing.JFrame {
      */
     public AddUsuario() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**

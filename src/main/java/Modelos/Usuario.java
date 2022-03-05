@@ -16,22 +16,26 @@ public class Usuario {
    private final Integer id;
    private String Usuario;
    private String Password;
+   private Integer rol;
    
    public Usuario() {
       this.id = null;
       this.Usuario = null;
       this.Password = null;
+      this.rol=null;
    }
-   public  Usuario(Integer id, String Usuario, String Password) {
+   public  Usuario(Integer id, String Usuario, String Password,Integer rol) {
       this.id = id;
       this.Usuario = Usuario;
       this.Password = Password;
+      this.rol=rol;
    }
    
-   public void setUsuario(String Usuario, String Password) {
+   public void setUsuario(String Usuario, String Password,Integer rol) {
        
       this.Usuario = Usuario;
       this.Password = Password;
+      this.rol=rol;
      
    }
    
@@ -45,6 +49,10 @@ public class Usuario {
    
    public String getPassword() {
       return Password;
+   }
+   
+    public Integer getRol() {
+      return rol;
    }
    
  

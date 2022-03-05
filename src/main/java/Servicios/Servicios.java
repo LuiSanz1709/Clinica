@@ -11,11 +11,14 @@ import Modelos.Paciente;
 import Modelos.Usuario;
 import Modelos.Venta;
 import Sistema.Principal;
+import Ticket.Ticket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -49,7 +52,7 @@ public class Servicios {
          consulta.setString(1, usuario);
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             u= new Usuario(resultado.getInt("id"),resultado.getString("usuario"),resultado.getString("password"));
+             u= new Usuario(resultado.getInt("id"),resultado.getString("usuario"),resultado.getString("password"),resultado.getInt("rol"));
             // System.out.println(u.toString());
              System.out.println(u);
            return u;
@@ -66,16 +69,12 @@ public class Servicios {
       try{
          PreparedStatement consulta;
          if(usuario.getID() == null){
-            consulta = conexion.prepareStatement("INSERT INTO " + this.tabla + "(usuario, password) VALUES(?, ?)");
+            consulta = conexion.prepareStatement("INSERT INTO " + this.tabla + "(usuario, password, rol) VALUES(?, ?, ?)");
             consulta.setString(1, usuario.getUsuario());
             consulta.setString(2, usuario.getPassword());
-         }else{
-            consulta = conexion.prepareStatement("UPDATE " + this.tabla + " SET titulo = ?, descripcion = ?, nivel_de_prioridad = ? WHERE id_tarea = ?");
-            consulta.setString(1, usuario.getUsuario());
-            consulta.setString(2, usuario.getPassword());
-            consulta.setInt(4, usuario.getID());
+            consulta.setInt(3, usuario.getRol());
+            System.out.print(consulta.executeUpdate());
          }
-         System.out.print(consulta.executeUpdate());
          
       }catch(SQLException ex){
          throw new SQLException(ex);
@@ -86,7 +85,10 @@ public class Servicios {
    
    public DefaultTableModel recuperarUsu(Connection conexion, String usu) throws SQLException {
       DefaultTableModel usua=new DefaultTableModel();
+      
+      usua.addColumn("id");
       usua.addColumn("usuario");
+      usua.addColumn("Rol");
       usua.addColumn("Editar");
        usua.addColumn("Eliminar");
       
@@ -103,10 +105,13 @@ public class Servicios {
          
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[3];
-             d[0]=resultado.getString("usuario");
-             d[1]=boton1;
-             d[2]=boton2;
+             Object d[] = new Object[5];
+             
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("usuario");
+             d[2]=resultado.getString("rol");
+             d[3]=boton1;
+             d[4]=boton2;
              usua.addRow(d);
              /*
              Object d[] = new Object[3];
@@ -123,10 +128,10 @@ public class Servicios {
       return usua;
    }
    
-   public void eliminar(Connection conexion, Usuario usuario) throws SQLException{
+   public void eliminarUsuario(Connection conexion, int id) throws SQLException{
       try{
-         PreparedStatement consulta = conexion.prepareStatement("DELETE FROM " + this.tabla + " WHERE id_tarea = ?");
-         consulta.setInt(1, usuario.getID());
+         PreparedStatement consulta = conexion.prepareStatement("DELETE FROM " + this.tabla + " WHERE id = ?");
+         consulta.setInt(1, id);
          consulta.executeUpdate();
       }catch(SQLException ex){
          throw new SQLException(ex);
@@ -135,20 +140,26 @@ public class Servicios {
    
    public DefaultTableModel recuperarTodas(Connection conexion) throws SQLException{
       DefaultTableModel pacientes=new DefaultTableModel();
+      
       pacientes.addColumn("id");
+      pacientes.addColumn("usuario");
+      pacientes.addColumn("Rol");
        pacientes.addColumn("Editar"); 
        pacientes.addColumn("Eliminar");
            
       //List<Usuario> usuarios = new ArrayList<>();
       try{
-         PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM " + this.tabla);
+         PreparedStatement consulta = conexion.prepareStatement("SELECT top(15) * FROM " + this.tabla);
          
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[3];
-             d[0]=resultado.getString("usuario");
-             d[1]=boton1;
-             d[2]=boton2;
+             Object d[] = new Object[5];
+             
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("usuario");             
+             d[2]=resultado.getString("rol");
+             d[3]=boton1;
+             d[4]=boton2;
              pacientes.addRow(d);
              /*
              Object d[] = new Object[3];
@@ -182,18 +193,25 @@ public class Servicios {
       pacientes.addColumn("telefono");
       pacientes.addColumn("edad");
       pacientes.addColumn("direccion");
+      
+      pacientes.addColumn("Editar");
+       pacientes.addColumn("Eliminar");
            
       //List<Usuario> usuarios = new ArrayList<>();
       try{
          PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM Paciente");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[5];
+             Object d[] = new Object[7];
              d[0]=resultado.getInt("id");
              d[1]=resultado.getString("nombre");
              d[2]= resultado.getString("telefono");
              d[3]= resultado.getInt("edad");
              d[4]= resultado.getString("direccion");
+             d[5]= boton1;
+             d[6]= boton2;
+             
+             
              pacientes.addRow(d);
              /*
              Object d[] = new Object[3];
@@ -235,11 +253,7 @@ public class Servicios {
       pacs.addColumn("direccion");
       pacs.addColumn("Editar");
        pacs.addColumn("Eliminar");
-      
-      
-      
-    
-   
+ 
        // boton.setSize(100,45);
        // boton.setVisible(true);
       try{
@@ -283,18 +297,22 @@ public class Servicios {
       articulos.addColumn("ref");
       articulos.addColumn("precio");
       articulos.addColumn("descripcion");
+      articulos.addColumn("Editar");
+       articulos.addColumn("Eliminar");
       
         try{
          PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM Articulo WHERE ref LIKE ?");
          consulta.setString(1, "%"+art+"%");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[5];
+             Object d[] = new Object[7];
              d[0]=resultado.getInt("id");
              d[1]=resultado.getString("Articulo");
              d[2]= resultado.getString("ref");
              d[3]= resultado.getDouble("precio");
              d[4]= resultado.getString("descripcion");
+             d[5]= boton1;
+             d[6]= boton2;
              articulos.addRow(d);
              /*
              Object d[] = new Object[3];
@@ -319,18 +337,22 @@ public class Servicios {
       articulos.addColumn("ref");
       articulos.addColumn("precio");
       articulos.addColumn("descripcion");
+      articulos.addColumn("Editar");
+       articulos.addColumn("Eliminar");
            
       //List<Usuario> usuarios = new ArrayList<>();
       try{
          PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM Articulo");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[5];
+             Object d[] = new Object[7];
              d[0]=resultado.getInt("id");
              d[1]=resultado.getString("Articulo");
              d[2]= resultado.getString("ref");
              d[3]= resultado.getDouble("precio");
              d[4]= resultado.getString("descripcion");
+             d[5]= boton1;
+             d[6]= boton2;
              articulos.addRow(d);
              /*
              Object d[] = new Object[3];
@@ -412,6 +434,11 @@ public class Servicios {
       }
    }
    
+   public String getFecha(){
+       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        System.out.println("yyyy/MM/dd HH:mm:ss-> "+dtf.format(LocalDateTime.now()));
+       return dtf.format(LocalDateTime.now());
+   }
       
    public Integer addVenta(Connection conexion) throws SQLException{
        int idDevuelto = 0;
@@ -420,11 +447,13 @@ public class Servicios {
            
        }
        try{
-         
+         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        System.out.println("yyyy/MM/dd HH:mm:ss-> "+dtf.format(LocalDateTime.now()));
          PreparedStatement consulta;
-         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario) VALUES(?, ?); ",Statement.RETURN_GENERATED_KEYS);
+         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha) VALUES(?, ?,?); ",Statement.RETURN_GENERATED_KEYS);
          consulta.setInt(1,p);// p.getID());
          consulta.setInt(2, u.getID());
+         consulta.setString(3,getFecha());
         
          System.out.println(consulta);
          System.out.println(consulta.executeUpdate());
@@ -494,7 +523,78 @@ public class Servicios {
                    p=0;
                    
         }
+        /*********************************PAGO********************************/
+       public ResultSet getPago(Connection conexion) {
+        ResultSet resultado =null;
+       PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("SELECT * FROM pago " );
+            resultado = consulta.executeQuery();
+             return resultado;
+         } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+       return resultado;
+       
+   }
+       
+       /***********************************Ticket***************************************/
+        public void ticket(){
+            
+        Ticket ticket=new Ticket();
+        ticket.AddCabecera("CLINICA FABELA");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("EXPEDIDO EN: "+getFecha());
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("DIRECCION");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera(ticket.DibujarLinea(29));
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("LIMA, XXXXXXXXXXXX");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("RFC: CSI-020226-MV4");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera("Caja # 1 - Ticket # 1");
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera("LE ATENDIO: JUAN");
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DibujarLinea(29));
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddItem("1", "Articulo Prueba", "15.00", "");
+        ticket.AddItem("", "", ticket.DarEspacio(), "");
+        ticket.AddItem("2", "Articulo Prueba", "25.00", "");
+        ticket.AddItem("", "", ticket.DarEspacio(), "");
+        ticket.AddTotal("", ticket.DibujarLinea(29));
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("SUBTOTAL", "29.75");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("IVA", "5.25");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("TOTAL", "35.00");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("RECIBIDO", "50.00");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("CAMBIO", "15.00");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddPieLinea(ticket.DibujarLinea(29));
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("EL xxx ES NUESTRA PASION...");
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("VIVE LA EXPERIENCIA EN xxx");
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("Gracias por su visita");
+        ticket.AddPieLinea(ticket.DarEspacio());
         
+        ticket.ImprimirDocumento("LPT2",false);
+            
+        }
 }
 
             

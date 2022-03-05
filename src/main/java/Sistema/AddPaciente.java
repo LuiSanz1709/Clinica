@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -27,7 +28,10 @@ public class AddPaciente extends javax.swing.JFrame {
      */
     public AddPaciente() {
         initComponents();
+        TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
         this.reload();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -54,7 +58,7 @@ public class AddPaciente extends javax.swing.JFrame {
         TPaciente = new javax.swing.JTable();
         jTextField4 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButton1.setText("Agregar Paciente");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -63,9 +67,26 @@ public class AddPaciente extends javax.swing.JFrame {
             }
         });
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
+            }
+        });
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
             }
         });
 
@@ -84,6 +105,10 @@ public class AddPaciente extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel5.setText("PACIENTES");
 
+        TPaciente = new javax.swing.JTable(){
+
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
         TPaciente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -176,7 +201,11 @@ public class AddPaciente extends javax.swing.JFrame {
          try {
                TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
             TPaciente.setModel(Principal.s.GetPacientes(Principal.c.obtener()));
-            
+            TableColumn columna = TPaciente.getColumnModel().getColumn(0);
+        columna.setMaxWidth(0);
+        columna.setMinWidth(0);
+        columna.setPreferredWidth(0);
+        TPaciente.doLayout();
              //TPaciente.removeColumn(TPaciente.getColumnModel().getColumn(0));
             
             } catch (SQLException ex) {
@@ -191,7 +220,9 @@ public class AddPaciente extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+         if((jTextField1.getText().equals("") || jTextField2.getText().equals("") || jTextField3.getText().equals("") || jTextArea1.getText().equals(""))){
+            showMessageDialog(null, "campos vacios");
+        }else{
         Paciente p=new Paciente();
         p.setPaciente(jTextField1.getText(), jTextField2.getText(),Integer.parseInt(jTextField3.getText()),jTextArea1.getText());
         try {
@@ -203,7 +234,7 @@ public class AddPaciente extends javax.swing.JFrame {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }}
      
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -220,7 +251,11 @@ public class AddPaciente extends javax.swing.JFrame {
            
             TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
             TPaciente.setModel(Principal.s.recuperarPac(Principal.c.obtener(),pac));   
-          
+          TableColumn columna = TPaciente.getColumnModel().getColumn(0);
+        columna.setMaxWidth(0);
+        columna.setMinWidth(0);
+        columna.setPreferredWidth(0);
+        TPaciente.doLayout();
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -234,10 +269,10 @@ public class AddPaciente extends javax.swing.JFrame {
         int col= TPaciente.getSelectedColumn();
         int Fila = TPaciente.getSelectedRow();
         switch (col){
-            case 2: 
+            case 5: 
                 showMessageDialog(null,"Desea Editar? "+TPaciente.getValueAt(Fila, 0).toString());
                 break;
-            case 3:
+            case 6:
                 showMessageDialog(null,"Desea Eliminar? "+TPaciente.getValueAt(Fila, 0).toString());
                 break;
             default:
@@ -249,6 +284,46 @@ public class AddPaciente extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_TPacienteMouseClicked
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+            int key = evt.getKeyChar();
+
+    boolean mayusculas = key >= 65 && key <= 90;
+    boolean minusculas = key >= 97 && key <= 122;
+    boolean espacio = key == 32;
+            
+     if (!(minusculas || mayusculas || espacio))
+    {
+        evt.consume();
+    }
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+          int key = evt.getKeyChar();
+        boolean numeros=key >=48 && key <=57;
+        if (!numeros){
+            evt.consume();
+        }
+        if(jTextField2.getText().trim().length()==10){
+            
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        // TODO add your handling code here:
+             int key = evt.getKeyChar();
+        boolean numeros=key >=48 && key <=57;
+        if (!numeros){
+            evt.consume();
+        }
+        if(jTextField3.getText().trim().length()==3){
+            
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
 
     /**
      * @param args the command line arguments

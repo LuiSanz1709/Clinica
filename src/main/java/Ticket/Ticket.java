@@ -16,6 +16,13 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
 import javax.swing.JOptionPane;
 public class Ticket{
 public Ticket(){}
@@ -108,8 +115,8 @@ try{
             bw.close();
         }
     
-FileWriter imp = new FileWriter("RICOH Edf_Admin Color");
-//FileWriter imp = new FileWriter(impresora);
+//FileWriter imp = new FileWriter("#LPT1");
+FileWriter imp = new FileWriter(impresora);
 char[] Caracter = new char[] { 0x1B, 'R',18};
 imp.write(Caracter);
 for(int cabecera=0;cabecera<CabezaLineas.size();cabecera++ ){
@@ -138,7 +145,7 @@ imp.write(ABRIR_GAVETA);
 imp.close();
 FileOutputStream os = new FileOutputStream("C:\\MotelOasis\\Tickets\\#LPT1.txt");
 PrintStream ps = new PrintStream(os);
-JOptionPane.showMessageDialog(null,"Error al Imprimi");
+JOptionPane.showMessageDialog(null,"Imprimi");
 //limpio las listas que contiene los datos
 CabezaLineas.removeAll(CabezaLineas);
 subCabezaLineas.removeAll(subCabezaLineas);
@@ -204,5 +211,93 @@ public static void Imprimir(){
     
 }
 
+public void cashdrawerOpen()   {
+
+    String code1 = "27 112 0 150 250"; //decimal
+    String code2 = "1B 70 00 96 FA"; //hexadecimal
+    String code = "ESCp0û."; //ascii
+
+     PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+     System.out.println(service.getName());
+     DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+    DocPrintJob pj = service.createPrintJob();
+     byte[] bytes;
+     bytes=code2.getBytes();
+     Doc doc=new SimpleDoc(bytes,flavor,null);
+      try {
+        pj.print(doc, null);
+    } catch (PrintException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}
+
+
+public void cashdrawerOpen2(){
+    String code1 = "27 112 0 150 250";
+    String code2 = "1B 70 00 96 FA";
+    String code = "ESCp0û.";
+    FileOutputStream os = null;
+    
+     PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+    try {
+        os = new FileOutputStream(service.getName());
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+      PrintStream ps = new PrintStream(os);
+      ps.print(code1.getBytes());
+      ps.close();
+}
+
+public void cashdrawerOpen3(){ 
+    String code2 = "1B700096FA"; // my code in hex
+    FileOutputStream os = null;
+    try {
+        os = new FileOutputStream("#LPT1");
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+      PrintStream ps = new PrintStream(os);
+    ps.print(toAscii(code2));
+      ps.close();
+}
+
+public StringBuilder toAscii( String hex ){
+StringBuilder output = new StringBuilder();
+for (int i = 0; i < hex.length(); i+=2) {
+String str = hex.substring(i, i+2);
+output.append((char)Integer.parseInt(str, 16));
+}
+ return output;
+
+}
+
+
+public void cashdrawerOpen22() {
+        String code2 = "1B700096FA"; // my code in hex
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream("#LPT1:XP-58");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        PrintStream ps = new PrintStream(os);
+        ps.print(toAscii22(code2));
+        ps.close();
+    }
+
+ public StringBuilder toAscii22(String hex) {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < hex.length(); i += 2) {
+            String str = hex.substring(i, i + 2);
+            output.append((char) Integer.parseInt(str, 16));
+        }
+        return output;
+
+    }
+
+
 public static void main(String[] args){}
 }
+
