@@ -45,6 +45,8 @@ public class Servicios {
      total=0;
      
      }
+     
+     
    //*******************************************************  LOGIN  ********************************************************************************************************************************* 
    public Usuario login(Connection conexion,String usuario)  throws SQLException{
          try{
@@ -92,12 +94,6 @@ public class Servicios {
       usua.addColumn("Editar");
        usua.addColumn("Eliminar");
       
-      
-      
-      Usuario usuario = null;
-   
-       // boton.setSize(100,45);
-       // boton.setVisible(true);
       try{
        
          PreparedStatement consulta = conexion.prepareStatement("SELECT top(5) * FROM Usuario WHERE usuario LIKE ?");
@@ -109,18 +105,15 @@ public class Servicios {
              
              d[0]=resultado.getString("id");
              d[1]=resultado.getString("usuario");
-             d[2]=resultado.getString("rol");
+             if(resultado.getInt("rol")==0){
+             d[2]="Recepcionista";
+             }else{
+             d[2]="Administrador";
+             }
              d[3]=boton1;
              d[4]=boton2;
              usua.addRow(d);
-             /*
-             Object d[] = new Object[3];
-             for (int i=0;i<3;i++){
-                 d[i]=resultado.getString(i+1);
-             }*/
-            //usuarios.add(new Usuario(resultado.getInt("id"), resultado.getString("usuario"), resultado.getString("password")));
-            //System.out.println(d[0]+" "+d[1]+"");
-            //pacientes.addRow(usuarios[1]);
+             
          }
       }catch(SQLException ex){
          throw new SQLException(ex);
@@ -156,19 +149,16 @@ public class Servicios {
              Object d[] = new Object[5];
              
              d[0]=resultado.getString("id");
-             d[1]=resultado.getString("usuario");             
-             d[2]=resultado.getString("rol");
+             d[1]=resultado.getString("usuario");  
+             if(resultado.getInt("rol")==0){
+             d[2]="Recepcionista";
+             }else{
+             d[2]="Administrador";
+             }
+            
              d[3]=boton1;
              d[4]=boton2;
              pacientes.addRow(d);
-             /*
-             Object d[] = new Object[3];
-             for (int i=0;i<3;i++){
-                 d[i]=resultado.getString(i+1);
-             }*/
-            //usuarios.add(new Usuario(resultado.getInt("id"), resultado.getString("usuario"), resultado.getString("password")));
-            //System.out.println(d[0]+" "+d[1]+"");
-            //pacientes.addRow(usuarios[1]);
          }
       }catch(SQLException ex){
          throw new SQLException(ex);
@@ -183,8 +173,59 @@ public class Servicios {
       tabla.addColumn("password");
       return tabla;
    }
+     
+     
+     public Usuario getUsuario(Integer id,Connection conexion){
+         Usuario usu = new Usuario();
+         
+         PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("SELECT * FROM Usuario WHERE id = ?");
+            consulta.setInt(1 , id);
+            ResultSet resultado = consulta.executeQuery();
+            while(resultado.next()){
+                usu = new Usuario(resultado.getInt("id"),resultado.getString("usuario"),resultado.getString("password") ,resultado.getInt("rol"));
+             
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     return usu;
+     }
 //*******************************************************  PACIENTES  ********************************************************************************************************************************* 
-   
+     public void elinimarCatalogo(Connection conexion,String tabla,int id){
+         
+         PreparedStatement consulta;
+        try {
+         consulta = conexion.prepareStatement("DELETE FROM " + tabla + " WHERE id = ?"); 
+         consulta.setInt(1, id);
+         consulta.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+     }
+     
+     
+     public Paciente getPaciente(Connection conexion,Integer id){
+         Paciente p = new Paciente();
+         
+         PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("SELECT * FROM Paciente WHERE id = ?");
+            consulta.setInt(1 , id);
+            ResultSet resultado = consulta.executeQuery();
+            while(resultado.next()){
+                p = new Paciente(resultado.getInt("id"),resultado.getString("nombre"),resultado.getString("telefono") ,resultado.getInt("edad"),resultado.getString("direccion") );
+             
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     return p;
+     }
    
      public DefaultTableModel GetPacientes(Connection conexion) throws SQLException{
       DefaultTableModel pacientes=new DefaultTableModel();
@@ -193,7 +234,6 @@ public class Servicios {
       pacientes.addColumn("telefono");
       pacientes.addColumn("edad");
       pacientes.addColumn("direccion");
-      
       pacientes.addColumn("Editar");
        pacientes.addColumn("Eliminar");
            
@@ -289,6 +329,25 @@ public class Servicios {
      
      //*******************************************************  ARTICULOS  ********************************************************************************************************************************* 
    
+       public Articulo getArticulo(Connection conexion,int id){
+           Articulo art = new Articulo();
+         
+         PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("SELECT * FROM Articulo WHERE id = ?");
+            consulta.setInt(1 , id);
+            ResultSet resultado = consulta.executeQuery();
+            while(resultado.next()){
+                art = new Articulo( resultado.getInt("id"),resultado.getString("articulo"),resultado.getString("ref") ,resultado.getDouble("precio"),resultado.getString("descripcion") );
+             
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     return art;
+       }
+       
        
            public DefaultTableModel recuperarArt(Connection conexion, String art) throws SQLException {
       DefaultTableModel articulos=new DefaultTableModel();
@@ -440,7 +499,7 @@ public class Servicios {
        return dtf.format(LocalDateTime.now());
    }
       
-   public Integer addVenta(Connection conexion) throws SQLException{
+   public Integer addVenta(Connection conexion,int fp) throws SQLException{
        int idDevuelto = 0;
        if (arts.isEmpty()){
            return 0;
@@ -450,10 +509,11 @@ public class Servicios {
          DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         System.out.println("yyyy/MM/dd HH:mm:ss-> "+dtf.format(LocalDateTime.now()));
          PreparedStatement consulta;
-         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha) VALUES(?, ?,?); ",Statement.RETURN_GENERATED_KEYS);
+         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha,id_forma_pago) VALUES(?, ?,?,?); ",Statement.RETURN_GENERATED_KEYS);
          consulta.setInt(1,p);// p.getID());
          consulta.setInt(2, u.getID());
          consulta.setString(3,getFecha());
+         consulta.setInt(4,fp);
         
          System.out.println(consulta);
          System.out.println(consulta.executeUpdate());
@@ -560,15 +620,20 @@ public class Servicios {
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - Ticket # 1");
         ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera("LE ATENDIO: JUAN");
+        ticket.AddSubCabecera("LE ATENDIO: "+u.getUsuario());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DibujarLinea(29));
         ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddItem("1", "Articulo Prueba", "15.00", "");
-        ticket.AddItem("", "", ticket.DarEspacio(), "");
-        ticket.AddItem("2", "Articulo Prueba", "25.00", "");
-        ticket.AddItem("", "", ticket.DarEspacio(), "");
+        
+        for(DetalleVenta dv : arts)
+            {         
+                ticket.AddItem("1", dv.getIdArticulo()+"", dv.getImporte()+"", dv.getCantidad()+"");
+                ticket.AddItem("", "", ticket.DarEspacio(), "");
+       
+            }
+        
+       
         ticket.AddTotal("", ticket.DibujarLinea(29));
         ticket.AddTotal("", ticket.DarEspacio());
         ticket.AddTotal("SUBTOTAL", "29.75");
@@ -583,6 +648,7 @@ public class Servicios {
         ticket.AddTotal("CAMBIO", "15.00");
         ticket.AddTotal("", ticket.DarEspacio());
         ticket.AddTotal("", ticket.DarEspacio());
+        
         ticket.AddPieLinea(ticket.DibujarLinea(29));
         ticket.AddPieLinea(ticket.DarEspacio());
         ticket.AddPieLinea("EL xxx ES NUESTRA PASION...");

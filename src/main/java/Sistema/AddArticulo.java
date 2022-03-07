@@ -192,10 +192,11 @@ public class AddArticulo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
  public DefaultTableModel AddArt(String id,double precio,DefaultTableModel art){
            
-             Object d[] = new Object[3];
+             Object d[] = new Object[4];
              d[0]=id;
              d[1]=precio;
              d[2]=1;
+             d[3]=precio*1;
              art.addRow(d);
               Principal.t=Principal.t+precio;
              Principal.tot.setText(Principal.t+" ");

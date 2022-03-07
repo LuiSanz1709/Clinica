@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -166,7 +167,6 @@ public class Principal extends javax.swing.JFrame {
         tot = new javax.swing.JLabel();
         iva = new javax.swing.JLabel();
         subtot = new javax.swing.JLabel();
-        jButton12 = new javax.swing.JButton();
         pago = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -232,8 +232,6 @@ public class Principal extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(177, 196, 252));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\SL03483514\\Downloads\\doctor.png")); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Palatino Linotype", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -491,7 +489,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(titulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 890, 60));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 890, 40));
 
         jTabbedPane5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -503,50 +501,20 @@ public class Principal extends javax.swing.JFrame {
 
         dventa = new javax.swing.JTable(){
 
-            public boolean isCellEditable(int row, int column) { return column == 2; }
+            public boolean isCellEditable(int row, int column) { //return column ==2;
+                return false;}
         };
         dventa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Articulo", "Precio", "Cantidad", "Total"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
-        dventa.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                dventaFocusGained(evt);
-            }
-        });
+        ));
         dventa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dventaMouseClicked(evt);
-            }
-        });
-        dventa.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                dventaInputMethodTextChanged(evt);
-            }
-        });
-        dventa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                dventaKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                dventaKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                dventaKeyTyped(evt);
             }
         });
         jScrollPane2.setViewportView(dventa);
@@ -622,13 +590,6 @@ public class Principal extends javax.swing.JFrame {
 
         subtot.setText("0.00");
 
-        jButton12.setText("jButton12");
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -665,7 +626,7 @@ public class Principal extends javax.swing.JFrame {
                                         .addComponent(subtot, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel8Layout.createSequentialGroup()
                                         .addGap(10, 10, 10)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -677,10 +638,6 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pago, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(66, 66, 66))
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(391, 391, 391)
-                .addComponent(jButton12)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -695,7 +652,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(art, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -717,9 +674,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
-                .addComponent(jButton12)
-                .addContainerGap())
+                .addGap(222, 222, 222))
         );
 
         jTabbedPane5.addTab("tab1", jPanel8);
@@ -876,15 +831,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        edad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edadActionPerformed(evt);
-            }
-        });
         edad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edadKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 edadKeyTyped(evt);
             }
@@ -1263,6 +1210,11 @@ public class Principal extends javax.swing.JFrame {
         jPanel6.setBackground(new Color(240,240,240));
     }//GEN-LAST:event_jTabbedPane5MouseClicked
 
+    public void limpiarusu(){
+        jTextField2.setText("");
+        jPasswordField1.setText("");
+        rol.setSelectedIndex(0);
+    }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -1290,6 +1242,8 @@ public class Principal extends javax.swing.JFrame {
             columna.setMinWidth(0);
             columna.setPreferredWidth(0);
             jTable2.doLayout(); 
+            
+            limpiarusu();
            
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1303,19 +1257,20 @@ public class Principal extends javax.swing.JFrame {
     
     
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       
+      int fp= pago.getSelectedIndex()+1;
+      
         if(paciente.getText().equals("xx")){
           showMessageDialog(null, "Agregue Paciente");
         }else{
              try {
-             int id=s.addVenta(c.obtener());
+             int id=s.addVenta(c.obtener(),fp);
              if (id==0){
              showMessageDialog(null, "Lista Vacia");
              }else{
              showMessageDialog(null, "Venta Realizada");
              
              imprimirTicket();
-             s.ticket();
+             //s.ticket();
              
              Limpiar();
              }
@@ -1323,7 +1278,9 @@ public class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {
+              Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+          }
         }
         // TODO add your handling code here:
        
@@ -1342,33 +1299,40 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     
-    public void imprimirTicket(){
+    public void imprimirTicket() throws IOException{
         
         Ticket ticket=new Ticket();
         ticket.AddCabecera("CLINICA FABELA");
         ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("EXPEDIDO EN: ----------");
+        ticket.AddCabecera("EXPEDIDO EL: "+s.getFecha());
         ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("AV. TAMAULIPAS NO. 5 LOC. 101");
+        ticket.AddCabecera("DIRECCION");
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera(ticket.DibujarLinea(29));
         ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("LIMA, XXXXXXXXXXXX");
+        ticket.AddCabecera("PACIENTE: "+paciente.getText());
         ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("RFC: CSI-020226-MV4");
+        ticket.AddCabecera("TELEFONO: "+paciente.getText());
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - Ticket # 1");
         ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera("LE ATENDIO: JUAN");
+        ticket.AddSubCabecera("LE ATENDIO: "+u.getUsuario());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DibujarLinea(29));
         ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddItem("1", "Articulo Prueba", "15.00", "");
-        ticket.AddItem("", "", ticket.DarEspacio(), "");
-        ticket.AddItem("2", "Articulo Prueba", "25.00", "");
-        ticket.AddItem("", "", ticket.DarEspacio(), "");
+            
+        
+        for (int i = 0; i < da.getRowCount(); i++) {
+            
+            ticket.AddItem(i+"", da.getValueAt(i, 0)+"",da.getValueAt(i, 1)+"" , da.getValueAt(i, 2)+"");
+            ticket.AddItem(ticket.DarEspacio(), "","" , "");
+       
+        }
+
+
+        
         ticket.AddTotal("", ticket.DibujarLinea(29));
         ticket.AddTotal("", ticket.DarEspacio());
         ticket.AddTotal("SUBTOTAL", "29.75");
@@ -1472,27 +1436,27 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         int col= jTable2.getSelectedColumn();
         int Fila = jTable2.getSelectedRow();
+        try {
         switch (col){
             case 3: 
                 //Cambiar Contraseña Usuario
                 //Roles de usuario
                 //
+                int id=Integer.parseInt(jTable2.getValueAt(Fila, 0).toString());
                 showMessageDialog(null,"Desea Editar? "+jTable2.getValueAt(Fila, 1).toString());
-                
+                Usuario usu= s.getUsuario(id,c.obtener());
+                jTextField2.setText(usu.getUsuario());
+                rol.setSelectedIndex(usu.getRol());
                 break;
             case 4:
                 int input = JOptionPane.showConfirmDialog(null, "Desea Eliminar? "+jTable2.getValueAt(Fila, 1).toString());
                 if(input==0){
                     //Eliminar usuario
-            try {
-                 showMessageDialog(null,"Eliminado "+jTable2.getValueAt(Fila, 0).toString());
+            
+                    showMessageDialog(null,"Eliminado "+jTable2.getValueAt(Fila, 0).toString());
                 s.eliminarUsuario(c.obtener(),(Integer.parseInt(jTable2.getValueAt(Fila, 0).toString())));
                 reload();
-            } catch (SQLException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
                 }
                 //showMessageDialog(null,"Desea Eliminar? "+jTable2.getValueAt(Fila, 0).toString());
                 break;
@@ -1500,6 +1464,11 @@ public class Principal extends javax.swing.JFrame {
                         
             
         }
+        } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
          //showMessageDialog(null,jTable2.getValueAt(Fila, 0).toString());
          //showMessageDialog(null,jTable2.getValueAt(Fila, 1).toString());
@@ -1588,22 +1557,46 @@ public class Principal extends javax.swing.JFrame {
           }
     }//GEN-LAST:event_jButton9ActionPerformed
 
+    
+    public void llenarPaciente(Paciente p){
+    
+        nombre.setText(p.getPaciente());
+        telefono.setText(p.getTelefono());
+        edad.setText(p.getEdad()+"");
+        direccion.setText(p.getDireccion());
+    
+    }
+    
     private void TPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TPacienteMouseClicked
         // TODO add your handling code here:
         int col= TPaciente.getSelectedColumn();
         int Fila = TPaciente.getSelectedRow();
+        try {
         switch (col){
             case 5:
-            showMessageDialog(null,"Desea Editar? "+TPaciente.getValueAt(Fila, 0).toString());
-            break;
+                int id=Integer.parseInt(TPaciente.getValueAt(Fila, 0).toString());
+                showMessageDialog(null,"Desea Editar? "+TPaciente.getValueAt(Fila, 0).toString());
+                Paciente p=s.getPaciente(c.obtener(), id);
+                llenarPaciente(p);
+                break;
             case 6:
-            showMessageDialog(null,"Desea Eliminar? "+TPaciente.getValueAt(Fila, 0).toString());
-            break;
-            default:
-
+                int input = JOptionPane.showConfirmDialog(null, "Desea Eliminar? "+TPaciente.getValueAt(Fila, 1).toString());
+                if(input==0){
+                    showMessageDialog(null,"Eliminado "+TPaciente.getValueAt(Fila, 1).toString());
+         
+                s.elinimarCatalogo(c.obtener(),"Paciente",(Integer.parseInt(TPaciente.getValueAt(Fila, 0).toString())));
           
-
+                    reload();
+                }
+                //showMessageDialog(null,"Desea Eliminar? "+TPaciente.getValueAt(Fila, 0).toString());
+                break;
+            default:
         }
+          } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
     }//GEN-LAST:event_TPacienteMouseClicked
 
@@ -1630,18 +1623,14 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField5KeyReleased
 
-    private void edadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edadActionPerformed
-
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
         
         if(articulo.getText().equals("") || referencia.getText().equals("") ||  precio.getText().equals("") ||  descripcion.getText().equals("")){
              showMessageDialog(null, "Revise campos vacios");
         }else{
-             Articulo a=new Articulo();
-        a.setArticulo(articulo.getText(),(referencia.getText()), Double.parseDouble(precio.getText()),descripcion.getText());
+            Articulo a=new Articulo();
+            a.setArticulo(articulo.getText(),(referencia.getText()), Double.parseDouble(precio.getText()),descripcion.getText());
 
         try {
             Principal.s.addArticulo(Principal.c.obtener() , a);
@@ -1690,113 +1679,51 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_TxtBuscaArtKeyReleased
 
+    public void llenarArt(Articulo a){
+        articulo.setText(a.getArticulo());
+        referencia.setText(a.getRef());
+        precio.setText((a.getPrecio())+"");
+        descripcion.setText(a.getDescripcion());
+        
+        
+    }
+    
     private void JArticuloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JArticuloMouseClicked
         // TODO add your handling code here:
-         int col= JArticulo.getSelectedColumn();
+        int col= JArticulo.getSelectedColumn();
         int Fila = JArticulo.getSelectedRow();
-        switch (col){
-            case 5:
-            showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 0).toString());
-            break;
-            case 6:
-            showMessageDialog(null,"Desea Eliminar? "+JArticulo.getValueAt(Fila, 0).toString());
-            break;
-            default:
-
-          
-
-        }
-
-        
+        try {
+            switch (col){
+                case 5:
+                   // showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 0).toString());
+                int id=Integer.parseInt(JArticulo.getValueAt(Fila, 0).toString());
+                showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 1).toString());
+                Articulo art= s.getArticulo(c.obtener(),id);
+                llenarArt(art);
+                    
+                    break;
+                case 6:
+                    int input = JOptionPane.showConfirmDialog(null, "Desea Eliminar? "+JArticulo.getValueAt(Fila, 1).toString());
+                    if(input==0){
+             
+                 //Eliminar Art
+                 
+                    showMessageDialog(null,"Eliminado "+JArticulo.getValueAt(Fila, 1).toString());
+                    s.elinimarCatalogo(c.obtener(),"Articulo",(Integer.parseInt(JArticulo.getValueAt(Fila, 0).toString())));
+                    reload();
+             
+            
+                    }
+                    //showMessageDialog(null,"Desea Eliminar? "+JArticulo.getValueAt(Fila, 0).toString());
+                    break;
+                default:
+            }
+        } catch (SQLException ex) {
+                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (ClassNotFoundException ex) {
+                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+             }        
     }//GEN-LAST:event_JArticuloMouseClicked
-
-    private void dventaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dventaKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dventaKeyReleased
-
-    private void dventaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dventaKeyTyped
-        // TODO add your handling code here:
-   
-    }//GEN-LAST:event_dventaKeyTyped
-
-    private void dventaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dventaKeyPressed
-
-        
-        
-    }//GEN-LAST:event_dventaKeyPressed
-
-    private void dventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dventaMouseClicked
-        int col= dventa.getSelectedColumn();
-        showMessageDialog(null,"cantidad? "+col);
-        int Fila = dventa.getSelectedRow();
-        switch (col){
-            case 2:
-                //showMessageDialog(null,"cantidad? ");
-                String cantidad;
-                cantidad = JOptionPane.showInputDialog("¿Cantidad de: ");
-                break;
-            default:
-        }
-    }//GEN-LAST:event_dventaMouseClicked
-
-    private void dventaInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_dventaInputMethodTextChanged
-        // TODO add your handling code here:
-         showMessageDialog(null,"Desea q? ");
-    }//GEN-LAST:event_dventaInputMethodTextChanged
-
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
-        System.out.println("LPT1");
-        Ticket ticket=new Ticket();
-        ticket.AddCabecera("RESTAURANTE XXXX");
-        ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("EXPEDIDO EN: ----------");
-        ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("AV. TAMAULIPAS NO. 5 LOC. 101");
-        ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera(ticket.DibujarLinea(29));
-        ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("LIMA, XXXXXXXXXXXX");
-        ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddCabecera("RFC: CSI-020226-MV4");
-        ticket.AddCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera("Caja # 1 - Ticket # 1");
-        ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera("LE ATENDIO: JUAN");
-        ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera(ticket.DibujarLinea(29));
-        ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddItem("1", "Articulo Prueba", "15.00", "");
-        ticket.AddItem("", "", ticket.DarEspacio(), "");
-        ticket.AddItem("2", "Articulo Prueba", "25.00", "");
-        ticket.AddItem("", "", ticket.DarEspacio(), "");
-        ticket.AddTotal("", ticket.DibujarLinea(29));
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("SUBTOTAL", "29.75");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("IVA", "5.25");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("TOTAL", "35.00");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("RECIBIDO", "50.00");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("CAMBIO", "15.00");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddPieLinea(ticket.DibujarLinea(29));
-        ticket.AddPieLinea(ticket.DarEspacio());
-        ticket.AddPieLinea("EL xxx ES NUESTRA PASION...");
-        ticket.AddPieLinea(ticket.DarEspacio());
-        ticket.AddPieLinea("VIVE LA EXPERIENCIA EN xxx");
-        ticket.AddPieLinea(ticket.DarEspacio());
-        ticket.AddPieLinea("Gracias por su visita");
-        ticket.AddPieLinea(ticket.DarEspacio());
-        
-        ticket.ImprimirDocumento("LPT2",false);
-    }//GEN-LAST:event_jButton12ActionPerformed
 
     private void telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyTyped
         // TODO add your handling code here:
@@ -1811,10 +1738,6 @@ public class Principal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_telefonoKeyTyped
-
-    private void edadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edadKeyPressed
 
     private void edadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadKeyTyped
         // TODO add your handling code here:
@@ -1853,20 +1776,15 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_precioKeyTyped
 
-    private void dventaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dventaFocusGained
+    private void dventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dventaMouseClicked
         // TODO add your handling code here:
+       
         int col= dventa.getSelectedColumn();
-        
         int Fila = dventa.getSelectedRow();
-        switch (col){
-            case 2:
-                //showMessageDialog(null,"cantidad? ");
-                String cantidad;
-                cantidad = JOptionPane.showInputDialog("¿focus de: ");
-                break;
-            default:
-        }
-    }//GEN-LAST:event_dventaFocusGained
+       // showMessageDialog(null,"Desea Editar? "+dventa.getValueAt(Fila, 1).toString());
+         System.out.println(dventa.getValueAt(0, 0).toString());
+        
+    }//GEN-LAST:event_dventaMouseClicked
    
            
       
@@ -1959,7 +1877,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
