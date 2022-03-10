@@ -226,9 +226,17 @@ public class AddPaciente extends javax.swing.JFrame {
         Paciente p=new Paciente();
         p.setPaciente(jTextField1.getText(), jTextField2.getText(),Integer.parseInt(jTextField3.getText()),jTextArea1.getText());
         try {
-            Principal.s.AddPaciente( Principal.c.obtener() , p);
+          int id=  Principal.s.AddPaciente( Principal.c.obtener() , p);
           //  Servicios.p=p;
             showMessageDialog(null, "Agregado con Exito");
+            
+                 
+            Principal.paciente.setText(jTextField1.getText());
+            Servicios.p = id;
+            Principal.pac= new Paciente(id, jTextField1.getText(), jTextField2.getText(),Integer.parseInt(jTextField3.getText()),
+                    jTextArea1.getText());
+           // this.setVisible(false);
+            
             this.setVisible(false);
         } catch (SQLException ex) {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
@@ -236,21 +244,40 @@ public class AddPaciente extends javax.swing.JFrame {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }}
      
+         
+       
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
         // TODO add your handling code here:
-        
+        String bx="null";
           String pac=jTextField4.getText();
            if (pac.isEmpty()){
         reload();
            }else{
               try {
           
-           
+            switch (Principal.jComboBox3.getSelectedIndex()){
+                    case 0:
+                        bx="nombre";
+                        break;
+                    case 1:
+                        
+                        bx="telefono";
+                        break;
+                     case 2:
+                        
+                        bx="edad";
+                        break;
+                    case 3:
+                        bx="direccion";
+                        break;
+                    default:
+                }
+                
             TPaciente.setDefaultRenderer(Object.class,new RenderTabla());
-            TPaciente.setModel(Principal.s.recuperarPac(Principal.c.obtener(),pac));   
+            TPaciente.setModel(Principal.s.recuperarPac(Principal.c.obtener(),pac,bx));   
           TableColumn columna = TPaciente.getColumnModel().getColumn(0);
         columna.setMaxWidth(0);
         columna.setMinWidth(0);
@@ -279,6 +306,7 @@ public class AddPaciente extends javax.swing.JFrame {
                 
             Principal.paciente.setText(" "+TPaciente.getValueAt(Fila, 1).toString());
             Servicios.p = Integer.parseInt(TPaciente.getValueAt(Fila, 0).toString());
+            Principal.pac= new Paciente(Integer.parseInt(TPaciente.getValueAt(Fila, 0).toString()), TPaciente.getValueAt(Fila, 1).toString(), TPaciente.getValueAt(Fila, 2).toString(),Integer.parseInt(TPaciente.getValueAt(Fila, 3).toString()),TPaciente.getValueAt(Fila, 4).toString());
             this.setVisible(false);
             
         }

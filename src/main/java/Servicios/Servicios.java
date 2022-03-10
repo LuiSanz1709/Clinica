@@ -194,15 +194,17 @@ public class Servicios {
      return usu;
      }
 //*******************************************************  PACIENTES  ********************************************************************************************************************************* 
-     public void elinimarCatalogo(Connection conexion,String tabla,int id){
+     public int elinimarCatalogo(Connection conexion,String tabla,int id){
          
          PreparedStatement consulta;
         try {
          consulta = conexion.prepareStatement("DELETE FROM " + tabla + " WHERE id = ?"); 
          consulta.setInt(1, id);
          consulta.executeUpdate();
+         return 0;
         } catch (SQLException ex) {
             Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+            return 1;
         }
       
      }
@@ -267,24 +269,49 @@ public class Servicios {
       }
       return pacientes;
    }
-       public void AddPaciente(Connection conexion, Paciente pac) throws SQLException{
+       public int AddPaciente(Connection conexion, Paciente pac) throws SQLException{
+           int id=0;
       try{
          PreparedStatement consulta;
       
-            consulta = conexion.prepareStatement("INSERT INTO Paciente (nombre, telefono, edad, direccion) VALUES(?, ?, ?, ?)");
+            consulta = conexion.prepareStatement("INSERT INTO Paciente (nombre, telefono, edad, direccion) VALUES(?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);         
+            consulta.setString(1, pac.getPaciente());
+            consulta.setString(2, pac.getTelefono());
+            consulta.setInt(3, pac.getEdad());
+            consulta.setString(4,pac.getDireccion());
+            System.out.print(consulta.executeUpdate());
+         
+            ResultSet result = consulta.getGeneratedKeys(); 
+            if (result.next()) {
+                 id = result.getInt(1);
+            }
+         return id;
+            
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+   }
+       
+  public int UpdatePaciente(Connection conexion, Paciente pac,int id) throws SQLException{
+      try{
+            PreparedStatement consulta;
+            consulta = conexion.prepareStatement("UPDATE Paciente SET nombre = ?, telefono = ?, edad = ?, direccion = ? WHERE id = "+id+"; ");
+         
             consulta.setString(1, pac.getPaciente());
             consulta.setString(2, pac.getTelefono());
             consulta.setInt(3, pac.getEdad());
             consulta.setString(4,pac.getDireccion());
         
          System.out.print(consulta.executeUpdate());
-         
+         return 0;
       }catch(SQLException ex){
          throw new SQLException(ex);
+         //return 1;
       }
    }
+       
   
-       public DefaultTableModel recuperarPac(Connection conexion, String pac) throws SQLException {
+       public DefaultTableModel recuperarPac(Connection conexion, String pac,String bx) throws SQLException {
       DefaultTableModel pacs=new DefaultTableModel();
        pacs.addColumn("id");
       pacs.addColumn("nombre");
@@ -298,7 +325,7 @@ public class Servicios {
        // boton.setVisible(true);
       try{
        
-         PreparedStatement consulta = conexion.prepareStatement("SELECT top(5) * FROM Paciente WHERE nombre LIKE ?");
+         PreparedStatement consulta = conexion.prepareStatement("SELECT top(5) * FROM Paciente WHERE "+bx+" LIKE ?");
          consulta.setString(1, "%"+pac+"%");
          
          ResultSet resultado = consulta.executeQuery();
@@ -349,7 +376,7 @@ public class Servicios {
        }
        
        
-           public DefaultTableModel recuperarArt(Connection conexion, String art) throws SQLException {
+           public DefaultTableModel recuperarArt(Connection conexion, String art, String bx) throws SQLException {
       DefaultTableModel articulos=new DefaultTableModel();
        articulos.addColumn("id");
       articulos.addColumn("Articulo");
@@ -360,7 +387,7 @@ public class Servicios {
        articulos.addColumn("Eliminar");
       
         try{
-         PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM Articulo WHERE ref LIKE ?");
+         PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM Articulo WHERE "+bx+" LIKE ?");
          consulta.setString(1, "%"+art+"%");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
@@ -477,17 +504,40 @@ public class Servicios {
    }
  
    
-   public void addArticulo(Connection conexion, Articulo a) throws SQLException{
+   public int  addArticulo(Connection conexion, Articulo a) throws SQLException{
+       int id=0;
        try{
          PreparedStatement consulta;
-         consulta = conexion.prepareStatement("INSERT INTO Articulo (articulo, ref, precio, descripcion) VALUES(?, ?, ?, ?)");
+         consulta = conexion.prepareStatement("INSERT INTO Articulo (articulo, ref, precio, descripcion) VALUES(?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
          consulta.setString(1, a.getArticulo());
          consulta.setString(2, a.getRef());
          consulta.setDouble(3, a.getPrecio());
          consulta.setString(4,a.getDescripcion());
         
-         System.out.print(consulta.executeUpdate());
          
+         System.out.println(consulta);
+         System.out.println(consulta.executeUpdate());
+         ResultSet result = consulta.getGeneratedKeys(); 
+         
+            if (result.next()) {
+                 id = result.getInt(1);
+            }
+         return id;
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+   }
+   
+    public void updateArt(Connection conexion, Articulo a,int id) throws SQLException{
+       try{
+         PreparedStatement consulta;
+         consulta = conexion.prepareStatement("UPDATE Articulo SET articulo = ?, ref = ?, precio = ?, descripcion = ? WHERE id = "+id+"; ");
+         consulta.setString(1, a.getArticulo());
+         consulta.setString(2, a.getRef());
+         consulta.setDouble(3, a.getPrecio());
+         consulta.setString(4,a.getDescripcion());
+         System.out.print(consulta.executeUpdate());
+         //return 1;
       }catch(SQLException ex){
          throw new SQLException(ex);
       }

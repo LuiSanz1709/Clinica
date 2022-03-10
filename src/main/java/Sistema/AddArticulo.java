@@ -13,6 +13,7 @@ import Servicios.RenderTabla;
 import Servicios.Servicios;
 import static Sistema.AddPaciente.TPaciente;
 import static Sistema.Principal.c;
+import static Sistema.Principal.da;
 import static Sistema.Principal.s;
 import static Sistema.Principal.t;
 import java.sql.SQLException;
@@ -181,9 +182,27 @@ public class AddArticulo extends javax.swing.JFrame {
         
        
         try {
-           Principal.s.addArticulo(Principal.c.obtener() , a);
+           int id = Principal.s.addArticulo(Principal.c.obtener() , a);
             showMessageDialog(null, "Agregado con Exito");
-            this.setVisible(false);
+            //this.setVisible(false);
+            
+            /*****************************************************************************************/
+            
+                boolean val=Principal.s.getArticulo2(id,
+                                                     Double.parseDouble(jTextField2.getText()));
+                if(val){
+                      showMessageDialog(null,"repetido");
+                }else{
+                 Principal.jTable3.setModel(this.AddArt(jTextField1.getText(),
+                                                        Double.parseDouble(jTextField2.getText()), Principal.da));
+                
+                this.setVisible(false);
+                }
+            
+            /******************************************************************************************/
+            
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(AddPaciente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -223,15 +242,15 @@ public class AddArticulo extends javax.swing.JFrame {
                  if(val){
                       showMessageDialog(null,"repetido");
                  }else{
-                 Principal.dventa.setModel(this.AddArt((JArticulo.getValueAt(Fila, 1).toString()),Double.parseDouble(JArticulo.getValueAt(Fila, 3).toString()), Principal.da));
+                 Principal.jTable3.setModel(this.AddArt((JArticulo.getValueAt(Fila, 1).toString()),Double.parseDouble(JArticulo.getValueAt(Fila, 3).toString()), Principal.da));
                  //Agregar DV
-                 DefaultTableModel dtmEjemplo = new DefaultTableModel(0,
-                                                             0);
+                 //DefaultTableModel dtmEjemplo = new DefaultTableModel(0,
+                                                           //  0);
  
-                 Principal.dventa=new JTable(dtmEjemplo){
-                 public boolean isCellEditable(int rowIndex, int vColIndex) {
+                 //Principal.jTable3.setModel(da);=new JTable(dtmEjemplo){
+                 /*public boolean isCellEditable(int rowIndex, int vColIndex) {
                      return false;
-                 }};
+                 }};*/
                  this.setVisible(false);
                  }
         } 
