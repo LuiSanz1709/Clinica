@@ -5,21 +5,49 @@
  */
 package Sistema;
 
+import static Sistema.Principal.c;
+import static Sistema.Principal.s;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 /**
  *
  * @author SL03483514
  */
 public class Pago extends javax.swing.JFrame {
-
+public static int fp;
+public static double total;
     /**
      * Creates new form Pago
      */
     public Pago() {
         initComponents();
-        
+        tot.setText(Principal.t+"");
+        total=Principal.t;
         this.setLocationRelativeTo(null);
+        addItem();
     }
 
+    
+       
+    public void addItem(){
+         try {
+                //System.out.println("addItem");
+                ResultSet resultado =s.getPago(c.obtener());
+                while(resultado.next()){
+                 pago.addItem(resultado.getString("forma_de_pago"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,41 +58,295 @@ public class Pago extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        efe = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        veinte = new javax.swing.JButton();
+        cien = new javax.swing.JButton();
+        cincuenta = new javax.swing.JButton();
+        quinientos = new javax.swing.JButton();
+        docientos = new javax.swing.JButton();
+        mil = new javax.swing.JButton();
+        tot = new javax.swing.JLabel();
+        tot1 = new javax.swing.JLabel();
+        pago = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Total");
+        jLabel1.setText("Ingrese pago en Efectivo:   $");
 
         jButton1.setText("Pagar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        veinte.setText("$20");
+        veinte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                veinteActionPerformed(evt);
+            }
+        });
+
+        cien.setText("$100");
+        cien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cienActionPerformed(evt);
+            }
+        });
+
+        cincuenta.setText("$50");
+        cincuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cincuentaActionPerformed(evt);
+            }
+        });
+
+        quinientos.setText("$500");
+        quinientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quinientosActionPerformed(evt);
+            }
+        });
+
+        docientos.setText("$200");
+        docientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                docientosActionPerformed(evt);
+            }
+        });
+
+        mil.setText("$1000");
+        mil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                milActionPerformed(evt);
+            }
+        });
+
+        tot1.setText("Total: $");
+
+        jLabel2.setText("Forma de pago:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(264, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(mil, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(docientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(quinientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cincuenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(veinte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(tot1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(tot, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(efe, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tot, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tot1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(29, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(efe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cincuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mil, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(quinientos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cien, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(docientos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(veinte, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int l;
+         
+       
+        if(efe.getText().equals("")){
+            if(pagar()){
+                showMessageDialog(null, "Venta Realizada");
+                this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+            }
+            
+        }else{
+            double pago=Double.parseDouble(efe.getText().toString());
+          if(valPago(pago,Principal.t)){  
+            if(pagar()){
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            this.setVisible(false);
+            }else{  showMessageDialog(null, "No se realizo la venta verificar datos");}
+          }  
+           
+        }  
+       
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public boolean pagar(){
+        
+        fp= this.pago.getSelectedIndex()+1;
+        boolean mal=false;
+         try {
+         int l = s.addVenta(Principal.c.obtener(),fp);
+          Principal.imprimirTicket(l);
+            Principal.Limpiar();
+            mal=true;
+             } catch (SQLException ex) {
+                Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         return mal;
+    }
+    
+    
+    public boolean valPago(double pago,double total){
+        if(pago>=total){
+            return true;
+        }
+        showMessageDialog(null, "El pago es menor al total a pagar verificar");
+        return false;
+    }
+    
+    
+    private void milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milActionPerformed
+        // TODO add your handling code here:
+        double pago=1000;
+     if(valPago(pago,Principal.t)){      
+        if(pagar()){
+            
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            
+            this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+        }
+     }   
+        
+    }//GEN-LAST:event_milActionPerformed
+
+    private void quinientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quinientosActionPerformed
+        // TODO add your handling code here:
+        
+        double pago=500;
+     
+     if(valPago(pago,Principal.t)){         
+        if(pagar()){
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            
+            this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+            }}
+    }//GEN-LAST:event_quinientosActionPerformed
+
+    private void cincuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cincuentaActionPerformed
+        // TODO add your handling code here:
+        
+            double pago=50;
+     if(valPago(pago,Principal.t)){  
+        
+        if(pagar()){
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            
+            this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+            }}
+    }//GEN-LAST:event_cincuentaActionPerformed
+
+    private void docientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_docientosActionPerformed
+        // TODO add your handling code here:
+     
+            double pago=200;
+     if(valPago(pago,Principal.t)){    
+        if(pagar()){
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            
+            this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+            }}
+    }//GEN-LAST:event_docientosActionPerformed
+
+    private void cienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cienActionPerformed
+        // TODO add your handling code here:
+        
+            double pago=100;
+     if(valPago(pago,Principal.t)){  
+        if(pagar()){
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            
+            this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+            }}
+    }//GEN-LAST:event_cienActionPerformed
+
+    private void veinteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veinteActionPerformed
+        // TODO add your handling code here:
+        
+     double pago=20;
+     if(valPago(pago,Principal.t)){ 
+        if(pagar()){
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            
+            this.setVisible(false);
+            }else{
+                showMessageDialog(null, "No se realizo la venta verificar datos");
+            }}
+    }//GEN-LAST:event_veinteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -102,8 +384,18 @@ public class Pago extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cien;
+    private javax.swing.JButton cincuenta;
+    private javax.swing.JButton docientos;
+    private javax.swing.JTextField efe;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton mil;
+    private javax.swing.JComboBox<String> pago;
+    private javax.swing.JButton quinientos;
+    private javax.swing.JLabel tot;
+    private javax.swing.JLabel tot1;
+    private javax.swing.JButton veinte;
     // End of variables declaration//GEN-END:variables
 }

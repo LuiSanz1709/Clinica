@@ -31,6 +31,10 @@ public class Articulo {
         this.precio=precio;
         this.descripcion=descripcion;
    }
+     
+        public Articulo(Integer id) {
+        this.id=id;
+   }
     
     public void setArticulo( String articulo, String ref,double precio,String descripcion) {
  

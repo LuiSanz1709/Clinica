@@ -31,6 +31,11 @@ public class Paciente {
       this.edad= edad;
       this.direccion=direccion;
    }
+    
+    
+   public Paciente(Integer id){
+        this.id = id;
+    }
    
   public void setPaciente( String nombre, String telefono,Integer edad,String direccion) {
  

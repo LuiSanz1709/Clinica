@@ -145,7 +145,7 @@ imp.write(ABRIR_GAVETA);
 imp.close();
 FileOutputStream os = new FileOutputStream("C:\\MotelOasis\\Tickets\\#LPT1.txt");
 PrintStream ps = new PrintStream(os);
-JOptionPane.showMessageDialog(null,"Imprimi");
+//JOptionPane.showMessageDialog(null,"Imprimi");
 //limpio las listas que contiene los datos
 CabezaLineas.removeAll(CabezaLineas);
 subCabezaLineas.removeAll(subCabezaLineas);

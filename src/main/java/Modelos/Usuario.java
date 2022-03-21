@@ -31,6 +31,7 @@ public class Usuario {
       this.rol=rol;
    }
    
+   
    public void setUsuario(String Usuario, String Password,Integer rol) {
        
       this.Usuario = Usuario;
@@ -54,6 +55,8 @@ public class Usuario {
     public Integer getRol() {
       return rol;
    }
+    
+    
    
  
   

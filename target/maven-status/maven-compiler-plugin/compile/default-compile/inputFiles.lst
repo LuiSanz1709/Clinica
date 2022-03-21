@@ -1,5 +1,6 @@
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Servicios/Servicios.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/Articulo.java
+/home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/DetalleTicket.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Ticket/Ticket.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Sistema/AddUsuario.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Sistema/Pago.java
@@ -8,9 +9,12 @@
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/Tabla.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Sistema/AddArticulo.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Sistema/AddPaciente.java
+/home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/Ticket2.java
+/home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Sistema/DetalleVenta2.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/Paciente.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/Venta.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Ticket/OrderItem.java
+/home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Sistema/Password.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Connection/Conexion.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/Modelos/Usuario.java
 /home/luis/NetBeansProjects/Proyecto/Clinica/src/main/java/com/crud/crud/Login/Login.java
