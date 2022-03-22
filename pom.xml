@@ -27,6 +27,7 @@
             <groupId>com.hynnet</groupId>
             <artifactId>sqljdbc4-chs</artifactId>
             <version>4.0.2206.100</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.external</groupId>

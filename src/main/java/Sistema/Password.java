@@ -111,6 +111,8 @@ public int id;
             try {
                 Principal.s.updateUsu(Principal.c.obtener(), pass.getText(), id);
                  showMessageDialog(null,"Contraseña actualizada");
+                 this.setVisible(false);
+
             } catch (SQLException ex) {
                 Logger.getLogger(Password.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {

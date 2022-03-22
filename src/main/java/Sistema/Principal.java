@@ -198,6 +198,7 @@ public final class Principal extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jButton16 = new javax.swing.JButton();
+        jButton18 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -465,7 +466,7 @@ public final class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -513,7 +514,7 @@ public final class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -756,6 +757,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButton18.setBackground(new java.awt.Color(204, 0, 51));
+        jButton18.setForeground(new java.awt.Color(255, 255, 255));
+        jButton18.setText("CANCELAR VENTAS");
+        jButton18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton18ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -775,7 +785,7 @@ public final class Principal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(114, 114, 114)))
-                        .addGap(0, 201, Short.MAX_VALUE)
+                        .addGap(0, 209, Short.MAX_VALUE)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -798,12 +808,15 @@ public final class Principal extends javax.swing.JFrame {
                     .addComponent(jScrollPane9)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addComponent(art, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -814,7 +827,8 @@ public final class Principal extends javax.swing.JFrame {
                 .addGap(4, 4, 4)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(art, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton18))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -962,7 +976,7 @@ public final class Principal extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jPasswordField1)
-                                    .addComponent(rol, 0, 347, Short.MAX_VALUE)
+                                    .addComponent(rol, 0, 353, Short.MAX_VALUE)
                                     .addComponent(jTextField2))
                                 .addGap(229, 229, 229)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1009,7 +1023,7 @@ public final class Principal extends javax.swing.JFrame {
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap(613, Short.MAX_VALUE))
         );
 
         rep.addTab("tab2", jPanel9);
@@ -1139,7 +1153,7 @@ public final class Principal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
                         .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1193,7 +1207,7 @@ public final class Principal extends javax.swing.JFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 121, Short.MAX_VALUE))
+                .addGap(0, 482, Short.MAX_VALUE))
         );
 
         rep.addTab("tab3", jPanel10);
@@ -1337,7 +1351,7 @@ public final class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addComponent(TxtBuscaArt, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
                         .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(67, 67, 67)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1444,7 +1458,7 @@ public final class Principal extends javax.swing.JFrame {
                                         .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(bxt, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 582, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 594, Short.MAX_VALUE)
                                 .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
         );
@@ -1464,7 +1478,7 @@ public final class Principal extends javax.swing.JFrame {
                     .addComponent(jButton17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(412, Short.MAX_VALUE))
         );
 
         rep.addTab("rep", jPanel17);
@@ -1634,14 +1648,7 @@ public final class Principal extends javax.swing.JFrame {
              
             
            
-            jTable2.setDefaultRenderer(Object.class,new RenderTabla());
-            
-            jTable2.setModel(s.recuperarTodas(Conexion.obtener()));
-             TableColumn columna = jTable2.getColumnModel().getColumn(0);
-            columna.setMaxWidth(0);
-            columna.setMinWidth(0);
-            columna.setPreferredWidth(0);
-            jTable2.doLayout(); 
+            reload();
             
             limpiarusu();
            
@@ -1984,7 +1991,7 @@ public final class Principal extends javax.swing.JFrame {
          
                 s.elinimarCatalogo(c.obtener(),"Paciente",(Integer.parseInt(TPaciente.getValueAt(Fila, 0).toString())));
           
-                    reload();
+                    reloadPac();
                 }
                 //showMessageDialog(null,"Desea Eliminar? "+TPaciente.getValueAt(Fila, 0).toString());
                 break;
@@ -2213,6 +2220,13 @@ public final class Principal extends javax.swing.JFrame {
         Password pas=new Password(id_edit_usu);
         pas.setVisible(true);
         
+         jButton4.setEnabled(false);
+        jButton1.setEnabled(true);
+        jButton7.setEnabled(false);
+        jPasswordField1.setEnabled(true);
+        jButton8.setEnabled(false);
+        jTextField2.setText("");
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jPanel13MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseMoved
@@ -2290,6 +2304,7 @@ public final class Principal extends javax.swing.JFrame {
         jPasswordField1.setEnabled(true);
         jButton8.setEnabled(false);
         jTextField2.setText("");
+        
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -2329,7 +2344,12 @@ public final class Principal extends javax.swing.JFrame {
             }else{
              //reloadcorte(id);
              //cargar ventas del corte generado
-             showMessageDialog(null, "Corte de Caja Generado el total de ingreesos es de: "+Servicios.totalcorte);
+             String cad="";
+             for(String[] a : s.corte){
+                 cad=cad+a[0]+":  $"+a[1]+"\n";
+                 
+             }
+             showMessageDialog(null, "Corte de Caja Generado Revise Ticket \n"+cad);
             
             }
         } catch (SQLException ex) {
@@ -2395,10 +2415,13 @@ public final class Principal extends javax.swing.JFrame {
             switch (col){
                 case 5:
                 // showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 0).toString());
-                int id=Integer.parseInt(JArticulo.getValueAt(Fila, 0).toString());
+                    
+                id_edit=Integer.parseInt(JArticulo.getValueAt(Fila, 0).toString());
+                System.out.println(id_edit);
                 showMessageDialog(null,"Desea Editar? "+JArticulo.getValueAt(Fila, 1).toString());
-                Articulo art= s.getArticulo(c.obtener(),id);
+                Articulo art= s.getArticulo(c.obtener(),id_edit);
                 llenarArt(art);
+                
                 jButton11.setEnabled(false);
 
                 jButton12.setEnabled(true);
@@ -2414,9 +2437,10 @@ public final class Principal extends javax.swing.JFrame {
                     //Eliminar Art
 
                     int a=s.elinimarCatalogo(c.obtener(),"Articulo",(Integer.parseInt(JArticulo.getValueAt(Fila, 0).toString())));
-                    reloadArt();
+                    
                     if (a==0){
                         showMessageDialog(null,"Eliminado "+JArticulo.getValueAt(Fila, 1).toString());
+                        reloadArt();
                     }else{
                         showMessageDialog(null,"No se pudo eliminar el articulo/servicio puede ser que se encuentre registrado en alguna venta");
                     }
@@ -2495,8 +2519,9 @@ public final class Principal extends javax.swing.JFrame {
             jButton11.setEnabled(true);
             jButton12.setEnabled(false);
             jButton13.setEnabled(false);
-            limpiararticulos();
+            
             try {
+                System.out.println(id_edit);
                 Principal.s.updateArt(Principal.c.obtener() , a,id_edit);
                 showMessageDialog(null, "Actualizado con Exito");
                 limpiararticulos();
@@ -2545,6 +2570,12 @@ public final class Principal extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_precioKeyTyped
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        // TODO add your handling code here:
+        Ventas v= new Ventas();
+        v.setVisible(true);
+    }//GEN-LAST:event_jButton18ActionPerformed
    
     public void reloadcorte(int id){
          try {
@@ -2659,6 +2690,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

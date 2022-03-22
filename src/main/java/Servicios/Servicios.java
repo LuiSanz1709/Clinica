@@ -44,11 +44,14 @@ public class Servicios {
     private final String tabla = "Usuario";
     JButton boton1 = new JButton("Editar");
      JButton boton2 = new JButton("Eliminar");
+     
+     JButton boton3 = new JButton("Cancelar");
      ArrayList<DetalleVenta> arts = new ArrayList<DetalleVenta>();
+    public static ArrayList<String[]> corte = new ArrayList<String[]>();
      Usuario u=new Usuario();
     public static int  p;
      double total;
-     public static double totalcorte;
+     public static double totalcorteEfe,totalcorteTC,totalcorteTD;
      
      public void limpiar(){
    // u.usuario()
@@ -187,28 +190,36 @@ public class Servicios {
       ventas.addColumn("id");
       ventas.addColumn("Paciente");
       ventas.addColumn("Telefono");
-      
       ventas.addColumn("Usuario");
       ventas.addColumn("Fecha"); 
       ventas.addColumn("Forma de pago");
+      ventas.addColumn("Estatus");
+      ventas.addColumn("Cancelar");
        
-         PreparedStatement consulta = conexion.prepareStatement("select TOP (15)\n" +
+         PreparedStatement consulta = conexion.prepareStatement("select TOP (100)\n" +
             "id,(select nombre from Paciente where id=id_Paciente) as Paciente,\n" +
             "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
             "(select usuario from Usuario where id=id_Usuario) as Usuario,\n" +
-            "fecha,\n" +
+            "fecha,estatus,\n" +
             "(select  forma_de_pago from pago where id=id_forma_pago) as forma_pago\n" +
-            "from Venta");
+            "from Venta order by id desc");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[6];
+             Object d[] = new Object[8];
              d[0]=resultado.getString("id");
              d[1]=resultado.getString("Paciente");  
              d[2]=resultado.getString("Telefono");  
-             
              d[3]=resultado.getString("Usuario");   
              d[4]=resultado.getString("fecha");  
-             d[5]=resultado.getString("forma_pago"); 
+             
+             d[5]=resultado.getString("forma_pago");  
+             if(resultado.getBoolean("estatus")==false){
+                       d[6]="CANCELADA"; 
+             }else{
+             d[6]="OK"; }
+             
+             d[7]=boton3; 
+             
              ventas.addRow(d);
        
        }return ventas;
@@ -450,6 +461,19 @@ public class Servicios {
          throw new SQLException(ex);
       }
    }
+    
+   public int ChangeEstatus(Connection conexion,int id) throws SQLException{
+       try{
+            PreparedStatement consulta;
+            consulta = conexion.prepareStatement("UPDATE Venta SET estatus = 0 WHERE id = "+id+"; ");
+             System.out.print(consulta.executeUpdate());
+            return 0;
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+         //return 1;
+      }
+   }
+   
        
   public int UpdatePaciente(Connection conexion, Paciente pac,int id) throws SQLException{
       try{
@@ -780,7 +804,7 @@ public class Servicios {
          DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         System.out.println("yyyy/MM/dd HH:mm:ss-> "+dtf.format(LocalDateTime.now()));
          PreparedStatement consulta;
-         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha,id_forma_pago,id_corte_caja) VALUES(?, ?,?,?,?); ",Statement.RETURN_GENERATED_KEYS);
+         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha,id_forma_pago,id_corte_caja,estatus) VALUES(?, ?,?,?,?,1); ",Statement.RETURN_GENERATED_KEYS);
          consulta.setInt(1,p);// p.getID());
          consulta.setInt(2, u.getID());
          consulta.setString(3,getFecha());
@@ -859,30 +883,46 @@ public class Servicios {
       }
    }
    
-    public double ValidarCorte(Connection conexion,int id) throws SQLException{
+    public boolean ValidarCorte(Connection conexion,int id) throws SQLException{
         double totalcorte=0;
+        boolean bandera = false;
         PreparedStatement consulta;
-        consulta = conexion.prepareStatement("select sum(importe) as total from Detalle_Venta where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+"))");
+       // consulta = conexion.prepareStatement("select sum(importe) as total from Detalle_Venta where id_venta in (select id from venta where EXISTS (select top(1) * "
+         //       + "from corte_caja WHERE venta.id_corte_caja="+id+"))");
+        
+        
+        
+        
+         consulta = conexion.prepareStatement("select p.forma_de_pago as pago, sum(importe*cantidad) as total \n" +
+                "from Detalle_Venta dv\n" +
+                "inner join Venta as v on v.id=dv.id_venta\n" +
+                "inner join pago as p on p.id=v.id_forma_pago\n" +
+                "where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )group by p.forma_de_pago order by p.forma_de_pago");
+        
+        
+        
         ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             totalcorte=resultado.getDouble("total");
+             //acomodar 
+             String[] e={resultado.getString("pago"),resultado.getString("total")};
+             corte.add(e);
+             bandera=true;
          }
          
-         
-         
-        return totalcorte;
+        return bandera;
     }    
         
+  
+    
         
              
     public int generaCorte(Connection conexion,int id) throws SQLException{
       int idc=0;
        try{
           int res=getIdCorte(conexion); 
-          double total= ValidarCorte(conexion,res);
-        if(total!=0){  
-            totalcorte=total;
-        PreparedStatement consulta;
+          boolean a=ValidarCorte(conexion,res);
+        if(a){  
+            PreparedStatement consulta;
         consulta = conexion.prepareStatement("INSERT INTO corte_caja (fecha, total,id_usuario) VALUES(?,?,?); ",Statement.RETURN_GENERATED_KEYS);
         consulta.setString(1,getFecha());// p.getID());
         consulta.setDouble(2, 0);
@@ -1043,6 +1083,41 @@ public class Servicios {
             
         }
         
+        
+        
+        public void TicketCorte(){
+        Ticket ticket=new Ticket();
+        ticket.AddCabecera("        FABELA");
+        ticket.AddCabecera(ticket.DarEspacio());
+         ticket.AddCabecera("    GRUPO MEDICO");
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera(ticket.DibujarLinea(29));
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddCabecera("Expedido el: "+s.getFecha());
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera("Caja # 1 - CORTE DE CAJA ");
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera("LE ATENDIO: "+u.getUsuario());
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        ticket.AddSubCabecera(ticket.DibujarLinea(29));
+        ticket.AddSubCabecera(ticket.DarEspacio());
+        
+        ticket.AddItem("", "","","");
+        ticket.AddItem("",  ticket.DarEspacio(),"", "");
+        
+        ticket.AddTotal(ticket.DibujarLinea(29),"");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("TOTAL:    ", "");
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddTotal("", ticket.DarEspacio());
+        ticket.AddPieLinea(ticket.DibujarLinea(29));
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddPieLinea("Corte generado");
+        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.ImprimirDocumento("LPT2",false);
+            
+        }
         
         
         public Usuario Repetidos(Connection conexion,Usuario u) throws SQLException{
