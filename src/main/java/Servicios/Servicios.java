@@ -184,6 +184,44 @@ public class Servicios {
        return dv;
    } 
    
+   
+   public DefaultTableModel recuperarCortes(Connection conexion) throws SQLException{
+   DefaultTableModel ventas=new DefaultTableModel();
+      
+      ventas.addColumn("id");
+      ventas.addColumn("fecha");
+      ventas.addColumn("Usuario");
+      ventas.addColumn("total");
+    PreparedStatement consulta = conexion.prepareStatement("select * from corte");
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             Object d[] = new Object[4];
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("fecha");  
+             d[2]=resultado.getString("usuario");  
+             d[3]=resultado.getString("total"); 
+             
+             ventas.addRow(d);
+       
+       }return ventas;
+   
+   
+   }
+   
+   public void cortexarticulo(Connection conexion , int id) throws SQLException{
+        PreparedStatement consulta;
+         consulta = conexion.prepareStatement("select p.forma_de_pago as pago, sum(importe*cantidad) as total \n" +
+                "from Detalle_Venta dv\n" +
+                "inner join Venta as v on v.id=dv.id_venta and v.id_corte_caja="+id+"\n" +
+                "inner join pago as p on p.id=v.id_forma_pago\n" +
+                "where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )group by p.forma_de_pago order by p.forma_de_pago");
+        
+        
+        
+       
+   }
+   
+   
    public DefaultTableModel recuperarVentas(Connection conexion) throws SQLException{
    DefaultTableModel ventas=new DefaultTableModel();
       
@@ -884,7 +922,7 @@ public class Servicios {
    }
    
     public boolean ValidarCorte(Connection conexion,int id) throws SQLException{
-        
+        corte = new ArrayList<String[]>();
         boolean bandera = false;
         PreparedStatement consulta;
        // consulta = conexion.prepareStatement("select sum(importe) as total from Detalle_Venta where id_venta in (select id from venta where EXISTS (select top(1) * "
