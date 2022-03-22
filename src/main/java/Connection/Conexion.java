@@ -19,10 +19,11 @@ public class Conexion {
       if (cnx == null) {
          try {
              Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-             String connectionURL="jdbc:sqlserver://N023520\\MSSQLSERVER2:1433;username=sa;password=Luisan17-;databaseName=clinica";
-             //String connectionURL="jdbc:sqlserver://DESKTOP-BOVSE76\\MSSQLSERVER:1433;username=sa;password=Luisan17-;databaseName=clinica";
-             //String connectionURL="jdbc:sqlserver://192.168.0.20\\MSSQLSERVER:1433;username=sa;password=Luisan17-;databaseName=clinica";
-             
+             //String connectionURL="jdbc:sqlserver://N023520\\MSSQLSERVER2:1433;username=sa;password=Luisan17-;databaseName=clinica";
+             String connectionURL="jdbc:sqlserver://DESKTOP-BOVSE76\\MSSQLSERVER:1433;username=sa;password=Luisan17-;databaseName=clinica";
+             //String connectionURL="jdbc:sqlserver://localhost\\MSSQLSERVER:1433;username=sa;password=Luisan17-;databaseName=clinica";
+             //String connectionUrl = "jdbc:sqlserver://localhost:1433;username=sa;password=Luisan17-;databaseName=clinica";
+
              cnx = DriverManager.getConnection(connectionURL);
              System.out.println("Nos Conectamos");
          } catch (SQLException ex) {

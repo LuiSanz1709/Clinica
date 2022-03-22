@@ -6,6 +6,7 @@
 package Sistema;
 
 import Servicios.RenderTabla;
+import static Sistema.Principal.JArticulo;
 import static Sistema.Principal.c;
 import static Sistema.Principal.jTable2;
 import static Sistema.Principal.s;
@@ -165,7 +166,7 @@ public class Ventas extends javax.swing.JFrame {
         
         if(col==7){
               try {
-                  int a=s.ChangeEstatus(Principal.c.obtener(), Fila);
+                  int a=s.ChangeEstatus(Principal.c.obtener(), Integer.parseInt(ventas.getValueAt(Fila, 0).toString()));
                   if(a==0){
                        showMessageDialog(null,"Venta Cancelada");
                        ventas();

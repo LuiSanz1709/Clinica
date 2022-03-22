@@ -238,6 +238,7 @@ public static double total;
          try {
          int l = s.addVenta(Principal.c.obtener(),fp);
           Principal.imprimirTicket(l);
+          Principal.imprimirTicket(l);
             Principal.Limpiar();
             mal=true;
              } catch (SQLException ex) {

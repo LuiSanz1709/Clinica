@@ -1708,6 +1708,8 @@ public final class Principal extends javax.swing.JFrame {
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera("TELEFONO: "+pac.getTelefono());
         ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("EDAD: "+pac.getEdad());
+        ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - Ticket #"+l);
         ticket.AddSubCabecera(ticket.DarEspacio());
@@ -1742,6 +1744,7 @@ public final class Principal extends javax.swing.JFrame {
         ticket.AddPieLinea(ticket.DarEspacio());
         
         ticket.ImprimirDocumento("LPT2",false);
+        
     }
     
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

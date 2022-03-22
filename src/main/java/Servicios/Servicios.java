@@ -884,7 +884,7 @@ public class Servicios {
    }
    
     public boolean ValidarCorte(Connection conexion,int id) throws SQLException{
-        double totalcorte=0;
+        
         boolean bandera = false;
         PreparedStatement consulta;
        // consulta = conexion.prepareStatement("select sum(importe) as total from Detalle_Venta where id_venta in (select id from venta where EXISTS (select top(1) * "
@@ -895,7 +895,7 @@ public class Servicios {
         
          consulta = conexion.prepareStatement("select p.forma_de_pago as pago, sum(importe*cantidad) as total \n" +
                 "from Detalle_Venta dv\n" +
-                "inner join Venta as v on v.id=dv.id_venta\n" +
+                "inner join Venta as v on v.id=dv.id_venta and v.id_corte_caja="+id+"\n" +
                 "inner join pago as p on p.id=v.id_forma_pago\n" +
                 "where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )group by p.forma_de_pago order by p.forma_de_pago");
         
@@ -928,8 +928,9 @@ public class Servicios {
         consulta.setDouble(2, 0);
         consulta.setInt(3,id);
         System.out.println(consulta.executeUpdate());//consulta.executeUpdate()
-        ResultSet result = consulta.getGeneratedKeys();  
-
+        ResultSet result = consulta.getGeneratedKeys();
+        TicketCorte();
+        
         if (result.next()) {
             idc = result.getInt(1);
           }
@@ -1087,28 +1088,30 @@ public class Servicios {
         
         public void TicketCorte(){
         Ticket ticket=new Ticket();
-        ticket.AddCabecera("        FABELA");
+        ticket.AddCabecera("          FABELA");
         ticket.AddCabecera(ticket.DarEspacio());
-         ticket.AddCabecera("    GRUPO MEDICO");
+         ticket.AddCabecera("      GRUPO MEDICO");
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera(ticket.DibujarLinea(29));
-        ticket.AddPieLinea(ticket.DarEspacio());
+        ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera("Expedido el: "+s.getFecha());
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - CORTE DE CAJA ");
         ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera("LE ATENDIO: "+u.getUsuario());
+        ticket.AddSubCabecera("Usuario: "+u.getUsuario());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DibujarLinea(29));
         ticket.AddSubCabecera(ticket.DarEspacio());
         
-        ticket.AddItem("", "","","");
-        ticket.AddItem("",  ticket.DarEspacio(),"", "");
+       
+             for(String[] a : s.corte){
+                ticket.AddItem(a[0], ":  $",a[1]," ");
+                ticket.AddItem("",  ticket.DarEspacio(),"", "");
+             }
+        
         
         ticket.AddTotal(ticket.DibujarLinea(29),"");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("TOTAL:    ", "");
         ticket.AddTotal("", ticket.DarEspacio());
         ticket.AddTotal("", ticket.DarEspacio());
         ticket.AddPieLinea(ticket.DibujarLinea(29));
