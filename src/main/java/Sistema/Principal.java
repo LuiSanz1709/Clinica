@@ -2354,6 +2354,13 @@ public final class Principal extends javax.swing.JFrame {
              }
              showMessageDialog(null, "Corte de Caja Generado Revise Ticket \n"+cad);
             
+             String cad2="";
+             for(String[] a : s.corte2){
+                 cad2=cad2+a[0]+":  $"+a[1]+"\n";
+                 
+             }
+             showMessageDialog(null, "Corte de Caja Generado Revise Ticket \n"+cad2);
+            
             }
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);

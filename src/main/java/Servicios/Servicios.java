@@ -48,6 +48,7 @@ public class Servicios {
      JButton boton3 = new JButton("Cancelar");
      ArrayList<DetalleVenta> arts = new ArrayList<DetalleVenta>();
     public static ArrayList<String[]> corte = new ArrayList<String[]>();
+     public static ArrayList<String[]> corte2 = new ArrayList<String[]>();
      Usuario u=new Usuario();
     public static int  p;
      double total;
@@ -209,14 +210,24 @@ public class Servicios {
    }
    
    public void cortexarticulo(Connection conexion , int id) throws SQLException{
+       corte2 = new ArrayList<String[]>();
         PreparedStatement consulta;
-         consulta = conexion.prepareStatement("select p.forma_de_pago as pago, sum(importe*cantidad) as total \n" +
-                "from Detalle_Venta dv\n" +
-                "inner join Venta as v on v.id=dv.id_venta and v.id_corte_caja="+id+"\n" +
-                "inner join pago as p on p.id=v.id_forma_pago\n" +
-                "where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )group by p.forma_de_pago order by p.forma_de_pago");
+         consulta = conexion.prepareStatement("select a.Articulo as art,a.precio, sum(dv.cantidad) as cantidad ,sum(importe*cantidad) as total\n" +
+            "from Detalle_Venta dv\n" +
+            "inner join Venta as v on v.id=dv.id_venta and v.estatus<>0\n" +
+            "inner join Articulo a on a.id=dv.id_Articulo\n" +
+            "where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )\n" +
+            "group by a.Articulo,a.precio order by a.Articulo");
         
-        
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             //acomodar 
+             String[] e={resultado.getString("art"),resultado.getString("cantidad"),resultado.getString("total")};
+             corte2.add(e);
+            // corte.add(e);
+           //  bandera=true;
+         }
+         
         
        
    }
@@ -714,6 +725,7 @@ public class Servicios {
             art = new Articulo(resultado.getInt("id"), resultado.getString("Articulo"), resultado.getString("ref"),resultado.getDouble("precio"),resultado.getString("descripcion"));
             if(verificarArt(resultado.getInt("id"))){
                  art = new Articulo(0, "", "",0.0,"");
+                 
                 return art;
             }
             arts.add(dv);
@@ -931,11 +943,12 @@ public class Servicios {
         
         
         
-         consulta = conexion.prepareStatement("select p.forma_de_pago as pago, sum(importe*cantidad) as total \n" +
-                "from Detalle_Venta dv\n" +
-                "inner join Venta as v on v.id=dv.id_venta and v.id_corte_caja="+id+"\n" +
-                "inner join pago as p on p.id=v.id_forma_pago\n" +
-                "where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )group by p.forma_de_pago order by p.forma_de_pago");
+         consulta = conexion.prepareStatement("select p.forma_de_pago as pago, sum(importe*cantidad) as total\n" +
+"                from Detalle_Venta dv\n" +
+"                inner join Venta as v on v.id=dv.id_venta and v.estatus<>0\n" +
+"                inner join pago as p on p.id=v.id_forma_pago\n" +
+"                where id_venta in (select id from venta where EXISTS (select top(1) * from corte_caja WHERE venta.id_corte_caja="+id+")  )\n" +
+"				group by p.forma_de_pago order by p.forma_de_pago");
         
         
         
@@ -959,6 +972,7 @@ public class Servicios {
        try{
           int res=getIdCorte(conexion); 
           boolean a=ValidarCorte(conexion,res);
+          cortexarticulo(conexion,res);
         if(a){  
             PreparedStatement consulta;
         consulta = conexion.prepareStatement("INSERT INTO corte_caja (fecha, total,id_usuario) VALUES(?,?,?); ",Statement.RETURN_GENERATED_KEYS);
@@ -1036,7 +1050,7 @@ public class Servicios {
         PreparedStatement consulta = conexion.prepareStatement("select TOP (1)\n" +
             "id,(select nombre from Paciente where id=id_Paciente) as Paciente,\n" +
             "(select usuario from Usuario where id=id_Usuario) as Usuario,\n" +
-                 "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
+            "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
             "fecha,\n" +
             "(select  forma_de_pago from pago where id=id_forma_pago) as forma_pago\n" +
             "from Venta order by id desc");
