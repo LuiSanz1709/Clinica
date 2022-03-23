@@ -1711,7 +1711,7 @@ public final class Principal extends javax.swing.JFrame {
         ticket.AddCabecera("EDAD: "+pac.getEdad());
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
-        ticket.AddSubCabecera("Caja # 1 - Ticket #"+l);
+        ticket.AddSubCabecera("Caja # 1 - Ticket Folio #"+l);
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("LE ATENDIO: "+u.getUsuario());
         ticket.AddSubCabecera(ticket.DarEspacio());
@@ -2356,10 +2356,10 @@ public final class Principal extends javax.swing.JFrame {
             
              String cad2="";
              for(String[] a : s.corte2){
-                 cad2=cad2+a[0]+":  $"+a[1]+"\n";
+                 cad2=cad2+a[0]+"  "+a[1]+"   $"+a[2]+"\n";
                  
              }
-             showMessageDialog(null, "Corte de Caja Generado Revise Ticket \n"+cad2);
+             //showMessageDialog(null, "Corte de Caja Generado Revise Ticket \n"+cad2);
             
             }
         } catch (SQLException ex) {

@@ -1051,6 +1051,7 @@ public class Servicios {
             "id,(select nombre from Paciente where id=id_Paciente) as Paciente,\n" +
             "(select usuario from Usuario where id=id_Usuario) as Usuario,\n" +
             "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
+            "(select edad from Paciente where id=id_Paciente) as edad,\n" +
             "fecha,\n" +
             "(select  forma_de_pago from pago where id=id_forma_pago) as forma_pago\n" +
             "from Venta order by id desc");
@@ -1103,6 +1104,8 @@ public class Servicios {
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera("TELEFONO: "+t.getTelefono());
         ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("EDAD: "+ resultado.getString("edad"));
+        ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - Ticket #"+t.getID());
         ticket.AddSubCabecera(ticket.DarEspacio());
@@ -1111,9 +1114,11 @@ public class Servicios {
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DibujarLinea(29));
         ticket.AddSubCabecera(ticket.DarEspacio());
+        int a=0;
         for(DetalleTicket dv : dv2)
-            {         
-                ticket.AddItem(dv.getID()+"", dv.getArticulo()+"", dv.getPrecio()+"", dv.getCantidad()+"");
+            {   
+                a=a++;
+                ticket.AddItem(a+"", dv.getArticulo()+"", dv.getPrecio()+"", dv.getCantidad()+"");
                 ticket.AddItem("",  ticket.DarEspacio(),"", "");
                 totalticket=totalticket+dv.getSubtotal();
        
@@ -1155,17 +1160,26 @@ public class Servicios {
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DibujarLinea(29));
         ticket.AddSubCabecera(ticket.DarEspacio());
-        
+        ticket.AddItem("Servicio ","   "," Cantidad","SubTotal");
+        ticket.AddItem("",  ticket.DarEspacio(),"", "");
        
-             for(String[] a : s.corte){
-                ticket.AddItem(a[0], ":  $",a[1]," ");
+             for(String[] a : s.corte2){
+                ticket.AddItem(a[0], "   ",a[1]+"   ",a[2]);
                 ticket.AddItem("",  ticket.DarEspacio(),"", "");
              }
         
         
-        ticket.AddTotal(ticket.DibujarLinea(29),"");
-        ticket.AddTotal("", ticket.DarEspacio());
-        ticket.AddTotal("", ticket.DarEspacio());
+        
+                 ticket.AddTotal(ticket.DibujarLinea(29),"");
+                 
+                ticket.AddTotal("", ticket.DarEspacio());
+             for(String[] a : s.corte){
+                 ticket.AddTotal(a[0]+":  $",a[1]+" ");
+                ticket.AddTotal("", ticket.DarEspacio());
+             }
+        
+        
+       
         ticket.AddPieLinea(ticket.DibujarLinea(29));
         ticket.AddPieLinea(ticket.DarEspacio());
         ticket.AddPieLinea("Corte generado");
