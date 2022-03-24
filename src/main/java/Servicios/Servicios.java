@@ -105,6 +105,21 @@ public class Servicios {
       }
    }
    
+   public void removeart(int d){
+       int a=0;
+       
+       for(DetalleVenta dv: arts){
+            if(d==dv.getIdArticulo()){
+                arts.remove(a);
+                 showMessageDialog(null,"Eliminando"+dv.getIdArticulo());
+                 
+            }
+           
+           a++;
+       }
+       
+   }
+   
    
    
    public DefaultTableModel recuperarUsu(Connection conexion, String usu) throws SQLException {
@@ -193,15 +208,17 @@ public class Servicios {
       ventas.addColumn("fecha");
       ventas.addColumn("Usuario");
       ventas.addColumn("total");
-    PreparedStatement consulta = conexion.prepareStatement("select * from corte");
+    PreparedStatement consulta = conexion.prepareStatement("select cc.id,fecha,total,u.usuario as usu\n" +
+        "from corte_caja cc\n" +
+        "inner join Usuario as u on u.id=cc.id_usuario\n" +
+        "order by id desc");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
              Object d[] = new Object[4];
              d[0]=resultado.getString("id");
              d[1]=resultado.getString("fecha");  
-             d[2]=resultado.getString("usuario");  
+             d[2]=resultado.getString("usu");  
              d[3]=resultado.getString("total"); 
-             
              ventas.addRow(d);
        
        }return ventas;

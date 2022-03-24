@@ -177,6 +177,11 @@ public class Ventas extends javax.swing.JFrame {
                   Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
               }
             
+        }else{
+           
+        DetalleVenta2 a=new DetalleVenta2(Integer.parseInt(ventas.getValueAt(Fila, 0).toString()));
+        a.setVisible(true);
+            
         }
         
         

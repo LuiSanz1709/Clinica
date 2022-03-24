@@ -123,8 +123,8 @@ public final class Principal extends javax.swing.JFrame {
          try {
           
             ventas.setDefaultRenderer(Object.class,new RenderTabla());
-            ventas.setModel(s.recuperarVentas(c.obtener()));
-            TableColumn columna = ventas.getColumnModel().getColumn(0);
+            ventas.setModel(s.recuperarCortes(c.obtener()));
+             TableColumn columna = ventas.getColumnModel().getColumn(0);
             columna.setMaxWidth(0);
             columna.setMinWidth(0);
             columna.setPreferredWidth(0);
@@ -735,6 +735,9 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jTable3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable3KeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTable3KeyReleased(evt);
             }
@@ -2326,11 +2329,7 @@ public final class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         //abrir ventana con detalle venta
-        int col= ventas.getSelectedColumn();
-        int Fila = ventas.getSelectedRow();
-        DetalleVenta2 a=new DetalleVenta2(Integer.parseInt(ventas.getValueAt(Fila, 0).toString()));
-        a.setVisible(true);
-        
+
     }//GEN-LAST:event_ventasMouseClicked
 
     private void jButton16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton16MouseClicked
@@ -2586,6 +2585,37 @@ public final class Principal extends javax.swing.JFrame {
         Ventas v= new Ventas();
         v.setVisible(true);
     }//GEN-LAST:event_jButton18ActionPerformed
+
+    
+    public void RemoveArt(int id){
+        
+        
+    }
+    
+    private void jTable3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyPressed
+        // TODO add your handling code here:
+         int col= jTable3.getSelectedColumn();
+        int Fila = jTable3.getSelectedRow();
+         int key = evt.getKeyChar();
+         boolean sup=key==127; 
+        if(sup){
+             int input = JOptionPane.showConfirmDialog(null, "Desea Eliminar? "+jTable3.getValueAt(Fila, 1).toString());
+                if(input==0){
+                    //Eliminar usuario
+                    int id=Integer.parseInt(jTable3.getValueAt(Fila, 0).toString());
+                    showMessageDialog(null,"Eliminado "+jTable3.getValueAt(Fila, 0).toString());
+
+                     s.removeart(id);
+                     this.RemoveArt(id);
+                     // s.eliminarUsuario(c.obtener(),(Integer.parseInt(jTable3.getValueAt(Fila, 0).toString())));
+                     // reload();
+               
+            
+                }
+               
+        }
+        
+    }//GEN-LAST:event_jTable3KeyPressed
    
     public void reloadcorte(int id){
          try {
