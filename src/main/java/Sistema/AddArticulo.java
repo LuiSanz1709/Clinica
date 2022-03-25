@@ -104,6 +104,12 @@ public class AddArticulo extends javax.swing.JFrame {
 
         jLabel3.setText("Precio:");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
         jLabel1.setText("Articulo:");
 
         jLabel2.setText("Referencia:");
@@ -372,6 +378,10 @@ public class AddArticulo extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_buscarartKeyReleased
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1KeyTyped
   public void reload(){
          try {
           
