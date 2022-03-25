@@ -107,16 +107,17 @@ public class Servicios {
    
    public void removeart(int d){
        int a=0;
-       
+       int id=0;
        for(DetalleVenta dv: arts){
             if(d==dv.getIdArticulo()){
-                arts.remove(a);
-                 showMessageDialog(null,"Eliminando"+dv.getIdArticulo());
-                 
+               id=a;
+                 //showMessageDialog(null,"Eliminando"+dv.getIdArticulo());
             }
-           
-           a++;
+          // showMessageDialog(null,"aumentando"+a);
+          a++;
        }
+       
+        arts.remove(id);
        
    }
    
@@ -905,7 +906,7 @@ public class Servicios {
                 
                   System.out.print(dv.getCantidad());
               if (dv.getIdArticulo()==id){
-                  d.setDetalleVenta(dv.getIdVenta(), Integer.parseInt(dv.getIdArticulo().toString()), Double.parseDouble(dv.getImporte().toString()), cantidad);
+                  d.setDetalleVenta(dv.getIdVenta(), dv.getIdArticulo(), Double.parseDouble(dv.getImporte().toString()), cantidad);
                   arts.set(act, d);
                   
                   System.out.print(dv.getCantidad());

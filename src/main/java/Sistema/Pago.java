@@ -21,6 +21,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class Pago extends javax.swing.JFrame {
 public static int fp;
 public static double total;
+public static double pagosum=0;
     /**
      * Creates new form Pago
      */
@@ -30,6 +31,7 @@ public static double total;
         total=Principal.t;
         this.setLocationRelativeTo(null);
         addItem();
+        pagosum=0;
     }
 
     
@@ -70,6 +72,8 @@ public static double total;
         tot1 = new javax.swing.JLabel();
         pago = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        sum = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -128,6 +132,8 @@ public static double total;
 
         jLabel2.setText("Forma de pago:");
 
+        jLabel3.setText("Pago: $");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,7 +156,6 @@ public static double total;
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,27 +165,39 @@ public static double total;
                                     .addComponent(tot, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(efe, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))))
+                            .addComponent(efe, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(sum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tot, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tot1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(29, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 10, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(13, 13, 13)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(pago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                            .addComponent(jLabel2))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(efe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,21 +270,23 @@ public static double total;
     
     
     public boolean valPago(double pago,double total){
+        
+        sum.setText(pago+"");
         if(pago>=total){
             return true;
         }
-        showMessageDialog(null, "El pago es menor al total a pagar verificar");
+       // showMessageDialog(null, "El pago es menor al total a pagar verificar"+pagosum);
         return false;
     }
     
     
     private void milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milActionPerformed
         // TODO add your handling code here:
-        double pago=1000;
-     if(valPago(pago,Principal.t)){      
+        pagosum=pagosum+1000;
+     if(valPago(pagosum,Principal.t)){      
         if(pagar()){
             
-            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pagosum-total));
             
             this.setVisible(false);
             }else{
@@ -280,11 +299,11 @@ public static double total;
     private void quinientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quinientosActionPerformed
         // TODO add your handling code here:
         
-        double pago=500;
+       pagosum=pagosum+500;
      
-     if(valPago(pago,Principal.t)){         
+     if(valPago(pagosum,Principal.t)){         
         if(pagar()){
-            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pagosum-total));
             
             this.setVisible(false);
             }else{
@@ -295,11 +314,11 @@ public static double total;
     private void cincuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cincuentaActionPerformed
         // TODO add your handling code here:
         
-            double pago=50;
-     if(valPago(pago,Principal.t)){  
+       pagosum=pagosum+50;
+     if(valPago(pagosum,Principal.t)){  
         
         if(pagar()){
-            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pagosum-total));
             
             this.setVisible(false);
             }else{
@@ -310,10 +329,10 @@ public static double total;
     private void docientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_docientosActionPerformed
         // TODO add your handling code here:
      
-            double pago=200;
-     if(valPago(pago,Principal.t)){    
+             pagosum=pagosum+200;
+     if(valPago(pagosum,Principal.t)){    
         if(pagar()){
-            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pagosum-total));
             
             this.setVisible(false);
             }else{
@@ -324,10 +343,10 @@ public static double total;
     private void cienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cienActionPerformed
         // TODO add your handling code here:
         
-            double pago=100;
-     if(valPago(pago,Principal.t)){  
+             pagosum=pagosum+100;
+     if(valPago(pagosum,Principal.t)){  
         if(pagar()){
-            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pagosum-total));
             
             this.setVisible(false);
             }else{
@@ -338,10 +357,10 @@ public static double total;
     private void veinteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veinteActionPerformed
         // TODO add your handling code here:
         
-     double pago=20;
-     if(valPago(pago,Principal.t)){ 
+     pagosum=pagosum+20;
+     if(valPago(pagosum,Principal.t)){ 
         if(pagar()){
-            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pago-total));
+            showMessageDialog(null, "Venta Realizada, su cambio es de: " +(pagosum-total));
             
             this.setVisible(false);
             }else{
@@ -392,9 +411,11 @@ public static double total;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton mil;
     private javax.swing.JComboBox<String> pago;
     private javax.swing.JButton quinientos;
+    private javax.swing.JLabel sum;
     private javax.swing.JLabel tot;
     private javax.swing.JLabel tot1;
     private javax.swing.JButton veinte;

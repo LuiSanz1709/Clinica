@@ -43,7 +43,7 @@ public class DetalleVenta {
 
     }
     
-     public Integer getIdArticulo(){
+     public int getIdArticulo(){
         return id_Articulo;
 
     }
