@@ -201,6 +201,8 @@ public class Servicios {
        return dv;
    } 
    
+
+   
    
    public DefaultTableModel recuperarCortes(Connection conexion) throws SQLException{
    DefaultTableModel ventas=new DefaultTableModel();
@@ -209,7 +211,7 @@ public class Servicios {
       ventas.addColumn("fecha");
       ventas.addColumn("Usuario");
       ventas.addColumn("total");
-    PreparedStatement consulta = conexion.prepareStatement("select cc.id,fecha,total,u.usuario as usu\n" +
+    PreparedStatement consulta = conexion.prepareStatement("select top(15) cc.id,fecha,total,u.usuario as usu\n" +
         "from corte_caja cc\n" +
         "inner join Usuario as u on u.id=cc.id_usuario\n" +
         "order by id desc");
@@ -221,7 +223,6 @@ public class Servicios {
              d[2]=resultado.getString("usu");  
              d[3]=resultado.getString("total"); 
              ventas.addRow(d);
-       
        }return ventas;
    
    
@@ -250,6 +251,47 @@ public class Servicios {
        
    }
    
+      public DefaultTableModel VentasxCorte(Connection conexion,int id) throws SQLException{
+       DefaultTableModel ventas=new DefaultTableModel();
+     ventas.addColumn("id");
+      ventas.addColumn("Paciente");
+      ventas.addColumn("Telefono");
+      ventas.addColumn("Usuario");
+      ventas.addColumn("Fecha"); 
+      ventas.addColumn("Forma de pago");
+      ventas.addColumn("Estatus");
+      ventas.addColumn("total");
+       PreparedStatement consulta = conexion.prepareStatement("SELECT v.id,p.nombre,p.telefono,u.usuario,v.fecha,v.estatus, pa.forma_de_pago,sum(dv.importe*dv.cantidad) as total\n" +
+                "FROM Venta v\n" +
+                "inner join Paciente as p on P.id=v.id_paciente\n" +
+                "inner join Usuario as u on u.id=v.id_Usuario\n" +
+                "inner join pago as pa on pa.id=v.id_forma_pago\n" +
+                "inner join Detalle_Venta as dv on v.id=dv.id_venta\n" +
+                "where v.id_corte_caja = "+id+" group by v.id,p.nombre,p.telefono,u.usuario,v.fecha,v.estatus, pa.forma_de_pago order by v.id desc ");
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             Object d[] = new Object[8];
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("nombre");  
+             d[2]=resultado.getString("telefono");  
+             d[3]=resultado.getString("usuario");   
+             d[4]=resultado.getString("fecha");  
+             
+             d[5]=resultado.getString("forma_de_pago");  
+             if(resultado.getBoolean("estatus")==false){
+                       d[6]="CANCELADA"; 
+             }else{
+             d[6]="OK"; }
+             
+             d[7]=resultado.getString("total"); 
+             
+             ventas.addRow(d);
+       
+       }
+      
+   return ventas;
+   }
+   
    
    public DefaultTableModel recuperarVentas(Connection conexion) throws SQLException{
    DefaultTableModel ventas=new DefaultTableModel();
@@ -261,8 +303,8 @@ public class Servicios {
       ventas.addColumn("Fecha"); 
       ventas.addColumn("Forma de pago");
       ventas.addColumn("Estatus");
-      ventas.addColumn("Cancelar");
-       
+      ventas.addColumn("Cancelar"); 
+      
          PreparedStatement consulta = conexion.prepareStatement("select TOP (100)\n" +
             "id,(select nombre from Paciente where id=id_Paciente) as Paciente,\n" +
             "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
