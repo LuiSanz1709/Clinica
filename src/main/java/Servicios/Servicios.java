@@ -53,12 +53,15 @@ public class Servicios {
     public static int  p;
      double total;
      public static double totalcorteEfe,totalcorteTC,totalcorteTD;
-     
+     public static int medico;
      public void limpiar(){
    // u.usuario()
      p=0;
      total=0;
-     
+     medico=0;
+     totalcorteEfe=0;
+    totalcorteTC=0;
+    totalcorteTD=0;
      }
      
      
@@ -120,9 +123,63 @@ public class Servicios {
         arts.remove(id);
        
    }
-   
-   
-   
+      
+           public DefaultTableModel recuperarMed(Connection conexion,String med) throws SQLException {
+      DefaultTableModel usua=new DefaultTableModel();
+      
+      usua.addColumn("id");
+      usua.addColumn("Medico");
+      usua.addColumn("Descripcion");
+      
+      try{
+       
+         PreparedStatement consulta = conexion.prepareStatement("select top (50) * from Medico where nombre like '%"+med+"%' ");
+         
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             Object d[] = new Object[3];
+             
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("Nombre");
+             d[2]=resultado.getString("Descripcion");
+             usua.addRow(d);
+             
+         }
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+      return usua;
+   }
+       
+           
+           
+           public DefaultTableModel recuperarMedicos(Connection conexion) throws SQLException {
+      DefaultTableModel usua=new DefaultTableModel();
+      
+      usua.addColumn("id");
+      usua.addColumn("Medico");
+      usua.addColumn("Descripcion");
+      
+      try{
+       
+         PreparedStatement consulta = conexion.prepareStatement("SELECT top(50) * FROM Medico ");
+         
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             Object d[] = new Object[3];
+             
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("Nombre");
+             d[2]=resultado.getString("Descripcion");
+             usua.addRow(d);
+             
+         }
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+      return usua;
+   }
+           
    public DefaultTableModel recuperarUsu(Connection conexion, String usu) throws SQLException {
       DefaultTableModel usua=new DefaultTableModel();
       
@@ -210,22 +267,53 @@ public class Servicios {
       ventas.addColumn("id");
       ventas.addColumn("fecha");
       ventas.addColumn("Usuario");
-      ventas.addColumn("total");
+      //ventas.addColumn("total");
     PreparedStatement consulta = conexion.prepareStatement("select top(15) cc.id,fecha,total,u.usuario as usu\n" +
         "from corte_caja cc\n" +
         "inner join Usuario as u on u.id=cc.id_usuario\n" +
         "order by id desc");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-             Object d[] = new Object[4];
+             Object d[] = new Object[3];
              d[0]=resultado.getString("id");
              d[1]=resultado.getString("fecha");  
              d[2]=resultado.getString("usu");  
-             d[3]=resultado.getString("total"); 
+            // d[3]=resultado.getString("total"); 
              ventas.addRow(d);
        }return ventas;
    
    
+   }
+   
+   public int guardarMedico(Connection conexion, String  medico,String desc) throws SQLException{
+     int idc;
+       try{
+         PreparedStatement consulta;
+        // Usuario u =new Usuario();
+            consulta = conexion.prepareStatement("INSERT INTO Medico (Nombre, Descripcion ) VALUES(?, ?)",Statement.RETURN_GENERATED_KEYS);
+            consulta.setString(1, medico);
+            consulta.setString(2, desc);
+            System.out.print(consulta.executeUpdate());
+            
+           
+        ResultSet result = consulta.getGeneratedKeys();
+        
+        
+        if (result.next()) {
+            idc = result.getInt(1);
+          
+        }else{
+            idc=0;
+            
+        }
+              
+           return idc;
+            
+      }catch(SQLException ex){
+          
+            showMessageDialog(null, "Error al Agregar Medico");
+         throw new SQLException(ex);
+      }
    }
    
    public void cortexarticulo(Connection conexion , int id) throws SQLException{
@@ -914,12 +1002,13 @@ public class Servicios {
          DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         System.out.println("yyyy/MM/dd HH:mm:ss-> "+dtf.format(LocalDateTime.now()));
          PreparedStatement consulta;
-         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha,id_forma_pago,id_corte_caja,estatus) VALUES(?, ?,?,?,?,1); ",Statement.RETURN_GENERATED_KEYS);
+         consulta = conexion.prepareStatement("INSERT INTO Venta (id_paciente, id_usuario,fecha,id_forma_pago,id_corte_caja,estatus,id_medico) VALUES(?, ?,?,?,?,1,?); ",Statement.RETURN_GENERATED_KEYS);
          consulta.setInt(1,p);// p.getID());
          consulta.setInt(2, u.getID());
          consulta.setString(3,getFecha());
          consulta.setInt(4,fp);
          consulta.setInt(5,cc);
+         consulta.setInt(6,medico);
         
          System.out.println(consulta);
          System.out.println(consulta.executeUpdate());
@@ -1023,7 +1112,91 @@ public class Servicios {
         return bandera;
     }    
         
-  
+    
+   public DefaultTableModel recuperarVentas2(Connection conexion) throws SQLException{
+       int res=getIdCorte(conexion); 
+        DefaultTableModel ventas=new DefaultTableModel();
+      
+      ventas.addColumn("id");
+      ventas.addColumn("Paciente");
+      ventas.addColumn("Telefono");
+      ventas.addColumn("Usuario");
+      ventas.addColumn("Fecha"); 
+      ventas.addColumn("Forma de pago");
+      ventas.addColumn("Estatus");
+      ventas.addColumn("Cancelar"); 
+      
+         PreparedStatement consulta = conexion.prepareStatement("select TOP (100)\n" +
+            "id,(select nombre from Paciente where id=id_Paciente) as Paciente,\n" +
+            "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
+            "(select usuario from Usuario where id=id_Usuario) as Usuario,\n" +
+            "fecha,estatus,\n" +
+            "(select  forma_de_pago from pago where id=id_forma_pago) as forma_pago\n" +
+            " from Venta v where v.id_corte_caja="+res+" order by id desc");
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             Object d[] = new Object[8];
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("Paciente");  
+             d[2]=resultado.getString("Telefono");  
+             d[3]=resultado.getString("Usuario");   
+             d[4]=resultado.getString("fecha");  
+             
+             d[5]=resultado.getString("forma_pago");  
+             if(resultado.getBoolean("estatus")==false){
+                       d[6]="CANCELADA"; 
+             }else{
+             d[6]="OK"; }
+             
+             d[7]=boton3; 
+             
+             ventas.addRow(d);
+       
+       }return ventas;
+   }
+   
+     public DefaultTableModel recuperarVentas22(Connection conexion,String buscar,String campo) throws SQLException{
+       int res=getIdCorte(conexion); 
+       String complemento= campo+" LIKE '%"+buscar+"%'";
+        DefaultTableModel ventas=new DefaultTableModel();
+      
+      ventas.addColumn("id");
+      ventas.addColumn("Paciente");
+      ventas.addColumn("Telefono");
+      ventas.addColumn("Usuario");
+      ventas.addColumn("Fecha"); 
+      ventas.addColumn("Forma de pago");
+      ventas.addColumn("Estatus");
+      ventas.addColumn("Cancelar"); 
+      
+         PreparedStatement consulta = conexion.prepareStatement("Select top(100) v.id,P.nombre as Paciente ,P.telefono as Telefono, u.usuario as Usuario,v.fecha,v.estatus,pa.forma_de_pago as forma_pago\n" +
+            "from Venta v\n" +
+            "inner join Paciente p on p.id=v.id_Paciente  \n" +
+            "inner join Usuario u on u.id=v.id_Usuario\n" +
+            "inner join pago pa on pa.id=v.id_forma_pago\n" +
+            "where v.id_corte_caja="+res+" and "+complemento+" order by v.id desc");
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+             Object d[] = new Object[8];
+             d[0]=resultado.getString("id");
+             d[1]=resultado.getString("Paciente");  
+             d[2]=resultado.getString("Telefono");  
+             d[3]=resultado.getString("Usuario");   
+             d[4]=resultado.getString("fecha");  
+             
+             d[5]=resultado.getString("forma_pago");  
+             if(resultado.getBoolean("estatus")==false){
+                       d[6]="CANCELADA"; 
+             }else{
+             d[6]="OK"; }
+             
+             d[7]=boton3; 
+             
+             ventas.addRow(d);
+       
+       }return ventas;
+   }
+   
     
         
              
@@ -1078,7 +1251,24 @@ public class Servicios {
          return b;
       
    }
-        
+    
+public String getMedico(Connection conexion,int med) throws SQLException{
+    
+   try{
+         PreparedStatement consulta = conexion.prepareStatement("select Nombre from Medico where id=?" );
+         consulta.setInt(1, med);
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+            
+           return resultado.getString("Nombre");
+         }
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+      return null;
+}    
+    
+    
         public void clean(){
                    arts.clear();
                    p=0;
@@ -1105,6 +1295,7 @@ public class Servicios {
        /***********************************Ticket***************************************/
         public void ticket(Connection conexion) throws SQLException{
             double totalticket=0;
+            String medicoo="";
         ArrayList<DetalleTicket> dv2=new ArrayList();    
          Ticket2 t=null;
         PreparedStatement consulta = conexion.prepareStatement("select TOP (1)\n" +
@@ -1113,11 +1304,13 @@ public class Servicios {
             "(select telefono from Paciente where id=id_Paciente) as Telefono,\n" +
             "(select edad from Paciente where id=id_Paciente) as edad,\n" +
             "fecha,\n" +
+           // "id_medico as medico,\n" +
             "(select  forma_de_pago from pago where id=id_forma_pago) as forma_pago\n" +
             "from Venta order by id desc");
          ResultSet resultado = consulta.executeQuery();
          
          while(resultado.next()){
+             
             PreparedStatement consulta2 = conexion.prepareStatement("select \n" +
 "id,\n" +
 "(select articulo from Articulo where id=id_Articulo)as articulo,\n" +
@@ -1143,7 +1336,14 @@ public class Servicios {
                      dv2,
                      0);
             
+            /* if (resultado.getInt("medico")==0){
+             medicoo="NA";
+         }else{
+             medicoo=getMedico(conexion,resultado.getInt("medico"));
+         }*/
          }                
+         
+         
         Ticket ticket=new Ticket();
         
         ticket.AddCabecera("FABELA");
@@ -1165,6 +1365,8 @@ public class Servicios {
         ticket.AddCabecera("TELEFONO: "+t.getTelefono());
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera("EDAD: "+ resultado.getString("edad"));
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("MEDICO: "+ resultado.getString("medico"));
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - Ticket #"+t.getID());

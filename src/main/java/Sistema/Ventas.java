@@ -37,7 +37,7 @@ public class Ventas extends javax.swing.JFrame {
          try {
           
             ventas.setDefaultRenderer(Object.class,new RenderTabla());
-            ventas.setModel(s.recuperarVentas(c.obtener()));
+            ventas.setModel(s.recuperarVentas2(c.obtener()));
             TableColumn columna = ventas.getColumnModel().getColumn(0);
             columna.setMaxWidth(0);
             columna.setMinWidth(0);
@@ -54,7 +54,7 @@ public class Ventas extends javax.swing.JFrame {
                 //System.out.println("addItem");
                 ResultSet resultado =s.getPago(c.obtener());
                 while(resultado.next()){
-                 pago.addItem(resultado.getString("forma_de_pago"));
+                // pago.addItem(resultado.getString("forma_de_pago"));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,10 +76,8 @@ public class Ventas extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ventas = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        busventa = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox<>();
-        pago = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -106,11 +104,13 @@ public class Ventas extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ventas);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Concluidas", "Canceladas" }));
+        busventa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                busventaKeyReleased(evt);
+            }
+        });
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Paciente", "Telefono", "Usuario" }));
-
-        pago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,24 +121,18 @@ public class Ventas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(busventa, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 196, Short.MAX_VALUE))))
+                        .addGap(214, 214, 214)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(pago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(busventa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
@@ -187,6 +181,47 @@ public class Ventas extends javax.swing.JFrame {
         
     }//GEN-LAST:event_ventasMouseClicked
 
+    private void busventaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busventaKeyReleased
+        // TODO add your handling code here:
+        
+             String bx="null";
+        if (busventa.getText().isEmpty()){
+           // reloadArt();
+        }else{
+            try {
+                switch (jComboBox2.getSelectedIndex()){
+                    case 0:
+                    bx="p.nombre";
+                    break;
+                    case 1:
+
+                    bx="p.telefono";
+                    break;
+                    case 2:
+
+                    bx="u.usuario";
+                    break;
+                   
+                    default:
+                }
+               // System.out.println(bx);
+                ventas.setDefaultRenderer(Object.class,new RenderTabla());
+                ventas.setModel(Principal.s.recuperarVentas22(Principal.c.obtener(),busventa.getText(),bx));
+                TableColumn columna = ventas.getColumnModel().getColumn(0);
+                columna.setMaxWidth(0);
+                columna.setMinWidth(0);
+                columna.setPreferredWidth(0);
+                ventas.doLayout();
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+    }//GEN-LAST:event_busventaKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -223,12 +258,10 @@ public class Ventas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField busventa;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JComboBox<String> pago;
     private javax.swing.JTable ventas;
     // End of variables declaration//GEN-END:variables
 }

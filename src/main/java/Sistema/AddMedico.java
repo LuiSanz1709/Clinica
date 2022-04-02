@@ -5,6 +5,22 @@
  */
 package Sistema;
 
+import Modelos.Paciente;
+import Servicios.RenderTabla;
+import Servicios.Servicios;
+import static Sistema.AddPaciente.TPaciente;
+import static Sistema.Principal.TPaciente;
+import static Sistema.Principal.c;
+import static Sistema.Principal.jComboBox3;
+import static Sistema.Principal.jTable2;
+import static Sistema.Principal.jTextField5;
+import static Sistema.Principal.s;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author SL03483514
@@ -16,6 +32,24 @@ public class AddMedico extends javax.swing.JFrame {
      */
     public AddMedico() {
         initComponents(); this.setLocationRelativeTo(null);
+        reload();
+    }
+    
+      public void reload(){
+         try {
+          
+            medicos.setDefaultRenderer(Object.class,new RenderTabla());
+            medicos.setModel(s.recuperarMedicos(c.obtener()));
+            TableColumn columna = medicos.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            medicos.doLayout();        
+            } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -29,14 +63,14 @@ public class AddMedico extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        nombre = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        desc = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        medicos = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
 
@@ -50,11 +84,16 @@ public class AddMedico extends javax.swing.JFrame {
 
         jLabel2.setText("Descripcion:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        desc.setColumns(20);
+        desc.setRows(5);
+        jScrollPane2.setViewportView(desc);
 
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -63,7 +102,7 @@ public class AddMedico extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2)
+                    .addComponent(nombre)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -82,7 +121,7 @@ public class AddMedico extends javax.swing.JFrame {
                 .addGap(57, 57, 57)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -92,7 +131,7 @@ public class AddMedico extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        medicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -103,7 +142,18 @@ public class AddMedico extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        medicos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                medicosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(medicos);
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jLabel3.setText("Buscar:");
 
@@ -152,6 +202,64 @@ public class AddMedico extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void medicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicosMouseClicked
+        // TODO add your handling code here:
+        
+        int Fila = medicos.getSelectedRow();
+        
+                
+            Principal.medico.setText(medicos.getValueAt(Fila, 1).toString());
+            Servicios.medico = Integer.parseInt(medicos.getValueAt(Fila,0 ).toString());
+            Principal.medicovar = (medicos.getValueAt(Fila, 1).toString());
+            this.setVisible(false);
+           
+    }//GEN-LAST:event_medicosMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            int id = s.guardarMedico(c.obtener(), nombre.getText(),desc.getText());
+            
+            Principal.medico.setText(nombre.getText());
+            Servicios.medico = id;
+            Principal.medicovar = nombre.getText();
+            this.setVisible(false);
+           
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddMedico.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+        
+         
+        if (jTextField1.getText().isEmpty()){
+            reload();
+        }else{
+            try {
+                
+            
+                
+                medicos.setDefaultRenderer(Object.class,new RenderTabla());
+                medicos.setModel(Principal.s.recuperarMed(Principal.c.obtener(),jTextField1.getText()));
+                TableColumn columna = medicos.getColumnModel().getColumn(0);
+            columna.setMaxWidth(0);
+            columna.setMinWidth(0);
+            columna.setPreferredWidth(0);
+            medicos.doLayout(); 
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -188,6 +296,7 @@ public class AddMedico extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea desc;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -196,9 +305,8 @@ public class AddMedico extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable medicos;
+    private javax.swing.JTextField nombre;
     // End of variables declaration//GEN-END:variables
 }

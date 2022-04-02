@@ -51,6 +51,7 @@ public final class Principal extends javax.swing.JFrame {
     public static double tiva;
     public static double tsubtot;
     public static Paciente pac=new Paciente();
+    public static String medicovar;
     public static int id_edit=0;
     public static int id_edit_pac=0;
     public static int id_edit_usu=0;
@@ -124,11 +125,16 @@ public final class Principal extends javax.swing.JFrame {
           
             ventas.setDefaultRenderer(Object.class,new RenderTabla());
             ventas.setModel(s.recuperarCortes(c.obtener()));
+            
+            
+            
              TableColumn columna = ventas.getColumnModel().getColumn(0);
             columna.setMaxWidth(0);
             columna.setMinWidth(0);
             columna.setPreferredWidth(0);
             ventas.doLayout();        
+            
+            
             } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -812,7 +818,7 @@ public final class Principal extends javax.swing.JFrame {
                                     .addComponent(paciente, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(202, 411, Short.MAX_VALUE))
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(112, 112, 112)
@@ -851,7 +857,7 @@ public final class Principal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(medico, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -895,8 +901,8 @@ public final class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(medico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton20)
-                .addGap(484, 484, 484))
+                .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(464, 464, 464))
         );
 
         rep.addTab("tab1", jPanel8);
@@ -1462,7 +1468,7 @@ public final class Principal extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(ventas);
 
-        bxt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Paciente", "Usuario", "Telefono" }));
+        bxt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "Usuario", "Fecha" }));
 
         jLabel36.setText("Buscar por:");
 
@@ -1519,7 +1525,7 @@ public final class Principal extends javax.swing.JFrame {
                     .addComponent(jButton17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(403, Short.MAX_VALUE))
+                .addContainerGap(401, Short.MAX_VALUE))
         );
 
         rep.addTab("rep", jPanel17);
@@ -1751,6 +1757,8 @@ public final class Principal extends javax.swing.JFrame {
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera("EDAD: "+pac.getEdad());
         ticket.AddCabecera(ticket.DarEspacio());
+         ticket.AddCabecera("MEDICO: "+medico.getText());
+        ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("PRESUPUESTO VENTA");
         ticket.AddSubCabecera(ticket.DarEspacio());
@@ -1810,6 +1818,8 @@ public final class Principal extends javax.swing.JFrame {
         ticket.AddCabecera("TELEFONO: "+pac.getTelefono());
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddCabecera("EDAD: "+pac.getEdad());
+        ticket.AddCabecera(ticket.DarEspacio());
+        ticket.AddCabecera("MEDICO: "+medico.getText());
         ticket.AddCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera(ticket.DarEspacio());
         ticket.AddSubCabecera("Caja # 1 - Ticket Folio #"+l);
@@ -2849,6 +2859,9 @@ public final class Principal extends javax.swing.JFrame {
         t=0;
         art.setText("");
         paciente.setText("xx");
+        medico.setText("xx");
+        medicovar="";
+                
         
     }
   
@@ -2963,7 +2976,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     public static javax.swing.JTextField jTextField5;
-    private javax.swing.JLabel medico;
+    public static javax.swing.JLabel medico;
     private javax.swing.JTextField nombre;
     public static javax.swing.JLabel paciente;
     private javax.swing.JTextField precio;

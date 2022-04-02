@@ -354,10 +354,12 @@ public class AddPaciente extends javax.swing.JFrame {
 
     boolean mayusculas = key >= 65 && key <= 90;
     boolean minusculas = key >= 97 && key <= 122;
-    boolean ene = key >= 164 && key <=165;
+       boolean ene = key == '\u00f1';
+    boolean enem=key =='\u00d1';
     boolean espacio = key == 32;
+    
             
-     if (!(minusculas || mayusculas || espacio || ene))
+     if (!(minusculas || mayusculas || espacio || ene || enem))
     {
         evt.consume();
     }
